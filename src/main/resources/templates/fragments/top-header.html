@@ -1,0 +1,132 @@
+<div th:fragment="topHeader"
+	class="top-header py-2 border-bottom bg-white">
+	<div class="container">
+		<div class="row align-items-center">
+
+			<!-- LOGO -->
+			<div class="col-md-3 text-center text-md-start">
+				<a th:href="@{/}"
+					class="text-decoration-none fw-bold fs-4 text-dark"> 🛒 Shop<span
+					style="color: #38ef7d;">Ease</span>
+				</a>
+			</div>
+
+			<!-- SEARCH -->
+			<div class="col-md-6 my-2 my-md-0">
+				<div class="input-group">
+					<input type="text" class="form-control"
+						placeholder="Search products...">
+					<button class="btn btn-dark">🔍</button>
+				</div>
+			</div>
+
+			<!-- USER + CART -->
+			<div class="col-md-3 text-center text-md-end">
+				<div class="d-inline-flex align-items-center gap-3">
+
+					<!-- ACCOUNT -->
+					<div class="dropdown">
+
+						<a class="dropdown-toggle text-decoration-none text-dark"
+							data-bs-toggle="dropdown"> 👋 <!-- AUTHENTICATED USER NAME -->
+							<span sec:authorize="isAuthenticated()" sec:authentication="name"></span>
+
+							<!-- GUEST --> <span sec:authorize="!isAuthenticated()">
+								Guest </span>
+
+						</a>
+
+						<ul class="dropdown-menu dropdown-menu-end">
+
+							<!-- GUEST -->
+							<li sec:authorize="!isAuthenticated()"><a
+								class="dropdown-item" th:href="@{/login}">Login</a></li>
+							<li sec:authorize="!isAuthenticated()"><a
+								class="dropdown-item" th:href="@{/register}">Register</a></li>
+
+							<!-- USER DASHBOARD -->
+							<li sec:authorize="hasRole('USER')"><a class="dropdown-item"
+								th:href="@{/user/dashboard}"> 📊 My Dashboard </a></li>
+
+							<!-- ADMIN DASHBOARD -->
+							<li sec:authorize="hasRole('ADMIN')"><a
+								class="dropdown-item" th:href="@{/admin/dashboard}"> 🛠
+									Admin Dashboard </a></li>
+
+							<li sec:authorize="isAuthenticated()">
+								<hr class="dropdown-divider">
+							</li>
+
+							<!-- LOGOUT -->
+							<li sec:authorize="isAuthenticated()">
+								<form th:action="@{/logout}" method="post">
+									<button class="dropdown-item text-danger">🚪 Logout</button>
+								</form>
+							</li>
+
+						</ul>
+					</div>
+
+
+					<!--  <!-- ACCOUNT -->
+					<!-- 
+                    <div class="dropdown">
+
+                        <a class="dropdown-toggle text-decoration-none text-dark"
+                           data-bs-toggle="dropdown">
+                            👋 <span sec:authorize="isAuthenticated()"
+                                    sec:authentication="name">Guest</span>
+                        </a>
+
+                        <ul class="dropdown-menu dropdown-menu-end">
+
+                            GUEST
+                            <li sec:authorize="!isAuthenticated()">
+                                <a class="dropdown-item" th:href="@{/login}">Login</a>
+                            </li>
+                            <li sec:authorize="!isAuthenticated()">
+                                <a class="dropdown-item" th:href="@{/register}">Register</a>
+                            </li>
+
+                            USER DASHBOARD
+                            <li sec:authorize="hasRole('USER')">
+                                <a class="dropdown-item"
+                                   th:href="@{/user/dashboard}">
+                                    📊 My Dashboard
+                                </a>
+                            </li>
+
+                            ADMIN DASHBOARD
+                            <li sec:authorize="hasRole('ADMIN')">
+                                <a class="dropdown-item"
+                                   th:href="@{/admin/dashboard}">
+                                    🛠 Admin Dashboard
+                                </a>
+                            </li>
+
+                            <li sec:authorize="isAuthenticated()">
+                                <hr class="dropdown-divider">
+                            </li>
+
+                            LOGOUT
+                            <li sec:authorize="isAuthenticated()">
+                                <form th:action="@{/logout}" method="post">
+                                    <button class="dropdown-item text-danger">
+                                        🚪 Logout
+                                    </button>
+                                </form>
+                            </li>
+
+                        </ul>
+                    </div> -->
+
+					<!-- CART -->
+					<a th:href="@{/user/cart}" class="text-dark text-decoration-none">
+						🛒 Cart </a>
+
+				</div>
+			</div>
+
+		</div>
+	</div>
+</div>

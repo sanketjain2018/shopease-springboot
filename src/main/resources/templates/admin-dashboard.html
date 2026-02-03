@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="https://www.thymeleaf.org/extras/spring-security"
+      th:replace="layout :: layout(~{::section})">
+
+<section>
+
+    <!-- ================= PAGE HEADER ================= -->
+    <div class="page-header text-center">
+        <div class="container">
+            <h1 class="fw-bold">Admin Dashboard</h1>
+            <p class="lead">
+                Manage products, users, and orders from one place
+            </p>
+        </div>
+    </div>
+
+    <!-- ================= CONTENT ================= -->
+    <div class="container my-5">
+
+        <!-- WELCOME -->
+        <div class="mb-4">
+            <h4 class="fw-bold">
+                Welcome, <span sec:authentication="name"></span>
+            </h4>
+            <p class="text-muted mb-0">
+                You are logged in as an administrator
+            </p>
+        </div>
+
+        <!-- ================= STATS ================= -->
+        <div class="row g-4 mb-5">
+
+            <div class="col-md-3">
+                <div class="border rounded p-3 bg-white text-center h-100">
+                    <i class="bi bi-box-seam fs-3 text-primary"></i>
+                    <h6 class="mt-2 mb-1">Products</h6>
+                    <p class="fw-bold fs-5 mb-0">—</p>
+                    <small class="text-muted">Total items</small>
+                </div>
+            </div>
+
+            <div class="col-md-3">
+                <div class="border rounded p-3 bg-white text-center h-100">
+                    <i class="bi bi-people fs-3 text-success"></i>
+                    <h6 class="mt-2 mb-1">Users</h6>
+                    <p class="fw-bold fs-5 mb-0">—</p>
+                    <small class="text-muted">Registered users</small>
+                </div>
+            </div>
+
+            <div class="col-md-3">
+                <div class="border rounded p-3 bg-white text-center h-100">
+                    <i class="bi bi-receipt fs-3 text-warning"></i>
+                    <h6 class="mt-2 mb-1">Orders</h6>
+                    <p class="fw-bold fs-5 mb-0">—</p>
+                    <small class="text-muted">Total orders</small>
+                </div>
+            </div>
+
+            <div class="col-md-3">
+                <div class="border rounded p-3 bg-white text-center h-100">
+                    <i class="bi bi-currency-rupee fs-3 text-danger"></i>
+                    <h6 class="mt-2 mb-1">Revenue</h6>
+                    <p class="fw-bold fs-5 mb-0">—</p>
+                    <small class="text-muted">Total sales</small>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- ================= MANAGEMENT SECTIONS ================= -->
+        <div class="row g-4">
+
+            <!-- PRODUCTS -->
+            <div class="col-md-4">
+                <div class="border rounded bg-white p-4 h-100">
+                    <h5 class="fw-bold mb-2">
+                        <i class="bi bi-box-seam text-primary"></i>
+                        Product Management
+                    </h5>
+                    <p class="text-muted">
+                        Add, edit, delete, and manage products available in the store.
+                    </p>
+                    <a th:href="@{/products-ui}"
+                       class="btn btn-outline-primary btn-sm">
+                        Manage Products
+                    </a>
+                </div>
+            </div>
+
+            <!-- USERS -->
+            <div class="col-md-4">
+                <div class="border rounded bg-white p-4 h-100">
+                    <h5 class="fw-bold mb-2">
+                        <i class="bi bi-people text-success"></i>
+                        User Management
+                    </h5>
+                    <p class="text-muted">
+                        View registered users and manage roles and access.
+                    </p>
+                    <a th:href="@{/admin/users}"
+                       class="btn btn-outline-success btn-sm">
+                        Manage Users
+                    </a>
+                </div>
+            </div>
+
+            <!-- ORDERS -->
+            <div class="col-md-4">
+                <div class="border rounded bg-white p-4 h-100">
+                    <h5 class="fw-bold mb-2">
+                        <i class="bi bi-receipt text-warning"></i>
+                        Order Management
+                    </h5>
+                    <p class="text-muted">
+                        Monitor customer orders and order status.
+                    </p>
+                    <a th:href="@{/admin/orders}"
+                       class="btn btn-outline-warning btn-sm">
+                        View Orders
+                    </a>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+</html>

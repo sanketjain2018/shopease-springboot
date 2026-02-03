@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="https://www.thymeleaf.org/extras/spring-security"
+      th:replace="layout :: layout(~{::section})">
+
+<section>
+
+    <!-- ================= HERO ================= -->
+    <div class="page-header text-center">
+        <div class="container">
+            <h1 class="fw-bold">Smart Shopping Starts Here</h1>
+            <p class="lead">
+                A modern e-commerce platform built with Spring Boot
+            </p>
+
+            <div class="mt-4">
+                <a th:href="@{/shop}" class="btn btn-light btn-lg me-2">
+                    Browse Products
+                </a>
+                <a th:href="@{/contact}" class="btn btn-outline-light btn-lg">
+                    Contact Us
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- ================= WHY US ================= -->
+    <div class="container my-5 py-5 bg-white rounded-4 shadow-sm">
+
+        <div class="text-center mb-5">
+            <h2 class="fw-bold">Why ShopEase?</h2>
+            <p class="text-muted">
+                Designed like a real-world production application
+            </p>
+        </div>
+
+        <div class="row g-4">
+
+            <div class="col-md-4">
+                <div class="border rounded bg-white p-4 h-100 text-center">
+                    <i class="bi bi-speedometer2 fs-1 text-primary"></i>
+                    <h5 class="mt-3 fw-bold">High Performance</h5>
+                    <p class="text-muted">
+                        Optimized pagination, sorting,
+                        and efficient database queries.
+                    </p>
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <div class="border rounded bg-white p-4 h-100 text-center">
+                    <i class="bi bi-shield-lock fs-1 text-success"></i>
+                    <h5 class="mt-3 fw-bold">Secure by Design</h5>
+                    <p class="text-muted">
+                        Built using Spring Security with
+                        role-based access control.
+                    </p>
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <div class="border rounded bg-white p-4 h-100 text-center">
+                    <i class="bi bi-layout-text-window fs-1 text-warning"></i>
+                    <h5 class="mt-3 fw-bold">Clean Architecture</h5>
+                    <p class="text-muted">
+                        Layered architecture with controllers,
+                        services, and repositories.
+                    </p>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- ================= STATS ================= -->
+    <div class="container my-5">
+
+        <div class="row g-4 text-center">
+
+            <div class="col-md-4">
+                <div class="border rounded bg-white p-4">
+                    <i class="bi bi-box-seam fs-2 text-primary"></i>
+                    <h3 class="fw-bold mt-2"
+                        th:text="${productCount}">
+                        0
+                    </h3>
+                    <p class="text-muted mb-0">
+                        Products Available
+                    </p>
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <div class="border rounded bg-white p-4">
+                    <i class="bi bi-people fs-2 text-success"></i>
+                    <h3 class="fw-bold mt-2">100+</h3>
+                    <p class="text-muted mb-0">
+                        Registered Users
+                    </p>
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <div class="border rounded bg-white p-4">
+                    <i class="bi bi-star fs-2 text-warning"></i>
+                    <h3 class="fw-bold mt-2">4.9 / 5</h3>
+                    <p class="text-muted mb-0">
+                        User Satisfaction
+                    </p>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- ================= CTA ================= -->
+    <div class="container my-5 text-center">
+        <h3 class="fw-bold mb-3">
+            Ready to explore?
+        </h3>
+        <p class="text-muted mb-4">
+            Browse products and experience a real e-commerce workflow.
+        </p>
+
+        <a th:href="@{/shop}" class="btn btn-success btn-lg">
+            Start Shopping
+        </a>
+    </div>
+
+</section>
+</html>

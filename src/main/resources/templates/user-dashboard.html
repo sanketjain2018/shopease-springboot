@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="https://www.thymeleaf.org/extras/spring-security"
+      th:replace="layout :: layout(~{::section})">
+
+<section>
+
+    <!-- ================= PAGE HEADER ================= -->
+    <div class="container mb-4">
+        <div class="d-flex justify-content-between align-items-center">
+            <div>
+                <h2 class="fw-bold mb-1">
+                    Dashboard
+                </h2>
+                <p class="text-muted mb-0">
+                    Welcome back,
+                    <strong><span sec:authentication="name"></span></strong>
+                </p>
+            </div>
+
+            <a th:href="@{/shop}"
+               class="btn btn-outline-primary">
+                Continue Shopping
+            </a>
+        </div>
+    </div>
+
+    <!-- ================= SUMMARY STATS ================= -->
+    <div class="container mb-4">
+        <div class="row g-4">
+
+            <div class="col-md-4">
+                <div class="card shadow-sm border-0 h-100">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between">
+                            <div>
+                                <h6 class="text-muted">Total Orders</h6>
+                                <h3 class="fw-bold mb-0">
+                                    <span th:text="${orderCount ?: 0}">0</span>
+                                </h3>
+                            </div>
+                            <i class="bi bi-bag-check fs-2 text-primary"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <div class="card shadow-sm border-0 h-100">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between">
+                            <div>
+                                <h6 class="text-muted">Cart Items</h6>
+                                <h3 class="fw-bold mb-0">
+                                    <span th:text="${cartCount ?: 0}">0</span>
+                                </h3>
+                            </div>
+                            <i class="bi bi-cart fs-2 text-warning"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <div class="card shadow-sm border-0 h-100">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between">
+                            <div>
+                                <h6 class="text-muted">Account Status</h6>
+                                <h5 class="fw-bold text-success mb-0">
+                                    Active
+                                </h5>
+                            </div>
+                            <i class="bi bi-person-check fs-2 text-success"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- ================= MAIN ACTIONS ================= -->
+    <div class="container">
+        <div class="row g-4">
+
+            <!-- ORDERS -->
+            <div class="col-md-6">
+                <div class="card shadow-sm border-0 h-100">
+                    <div class="card-body">
+                        <h5 class="fw-bold mb-2">
+                            Orders
+                        </h5>
+                        <p class="text-muted mb-4">
+                            View your order history and track deliveries.
+                        </p>
+
+                        <a th:href="@{/user/orders}"
+                           class="btn btn-primary btn-sm">
+                            View Orders
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- PROFILE -->
+            <div class="col-md-6">
+                <div class="card shadow-sm border-0 h-100">
+                    <div class="card-body">
+                        <h5 class="fw-bold mb-2">
+                            Account Settings
+                        </h5>
+                        <p class="text-muted mb-4">
+                            Manage your profile and personal information.
+                        </p>
+
+                        <a th:href="@{/user/profile}"
+                           class="btn btn-outline-secondary btn-sm">
+                            Edit Profile
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+</section>
+</html>

@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="https://www.thymeleaf.org/extras/spring-security"
+      th:replace="layout :: layout(~{::section})">
+
+<section>
+
+    <!-- ================= PAGE HEADER ================= -->
+    <div class="container mb-4">
+        <div class="d-flex justify-content-between align-items-center">
+            <div>
+                <h2 class="fw-bold mb-1">Account Settings</h2>
+                <p class="text-muted mb-0">
+                    Manage your personal information
+                </p>
+            </div>
+
+            <a th:href="@{/user/dashboard}"
+               class="btn btn-outline-secondary">
+                ← Back to Dashboard
+            </a>
+        </div>
+    </div>
+
+    <!-- ================= PROFILE FORM ================= -->
+    <div class="container">
+
+        <div class="row justify-content-center">
+
+            <div class="col-md-8">
+
+                <!-- SUCCESS MESSAGE -->
+                <div th:if="${param.success}"
+                     class="alert alert-success">
+                    Profile updated successfully
+                </div>
+
+                <div class="card shadow-sm border-0">
+
+                    <div class="card-body p-4">
+
+                        <h5 class="fw-bold mb-4">
+                            Personal Information
+                        </h5>
+
+                        <form th:action="@{/user/profile/update}"
+                              method="post">
+
+                            <div class="row g-3">
+
+                                <!-- USERNAME -->
+                                <div class="col-md-6">
+                                    <label class="form-label fw-semibold">
+                                        Username
+                                    </label>
+                                    <input type="text"
+                                           class="form-control"
+                                           sec:authentication="name"
+                                           disabled>
+                                </div>
+
+                                <!-- EMAIL -->
+                                <div class="col-md-6">
+                                    <label class="form-label fw-semibold">
+                                        Email
+                                    </label>
+                                    <input type="email"
+                                           name="email"
+                                           class="form-control"
+                                           th:value="${user.email}"
+                                           required>
+                                </div>
+
+                                <!-- FULL NAME -->
+                                <div class="col-md-6">
+                                    <label class="form-label fw-semibold">
+                                        Full Name
+                                    </label>
+                                    <input type="text"
+                                           name="name"
+                                           class="form-control"
+                                           th:value="${user.name}"
+                                           required>
+                                </div>
+
+                                <!-- PHONE -->
+                                <div class="col-md-6">
+                                    <label class="form-label fw-semibold">
+                                        Mobile Number
+                                    </label>
+                                    <input type="text"
+                                           name="phone"
+                                           class="form-control"
+                                           th:value="${user.phone}">
+                                </div>
+
+                            </div>
+
+                            <!-- ACTIONS -->
+                            <div class="d-flex justify-content-end gap-2 mt-4">
+                                <a th:href="@{/user/dashboard}"
+                                   class="btn btn-outline-secondary">
+                                    Cancel
+                                </a>
+
+                                <button class="btn btn-success px-4">
+                                    Save Changes
+                                </button>
+                            </div>
+
+                        </form>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+</html>

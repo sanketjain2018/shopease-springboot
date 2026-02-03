@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Server Error</title>
+    <link rel="stylesheet" th:href="@{/css/app.css}">
+</head>
+
+<body class="d-flex justify-content-center align-items-center vh-100 bg-light">
+
+<div class="text-center">
+    <h1 class="display-1 text-danger">500</h1>
+    <h3>Something went wrong</h3>
+    <p class="text-muted">
+        We are fixing the issue. Please try again later.
+    </p>
+
+    <a th:href="@{/shop}" class="btn btn-dark mt-3">
+        Go to Home
+    </a>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,132 @@
+
+<!-- TEMPLATE CODE ADD HERE -->
+
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      th:replace="layout :: layout(~{::section})">
+
+<section>
+
+    <!-- ================= PAGE HEADER ================= -->
+    <div class="page-header text-center">
+        <div class="container">
+            <h1 class="fw-bold">Shop Products</h1>
+            <p class="lead">Find the best products at the best price</p>
+        </div>
+    </div>
+
+    <!-- ================= SORTING ================= -->
+    <div class="container my-4">
+        <div class="row">
+            <div class="col-md-4 ms-auto">
+                <form method="get" th:action="@{/shop}">
+                    <select name="sortBy" class="form-select"
+                            onchange="this.form.submit()">
+                        <option value="id" th:selected="${sortBy=='id'}">Newest</option>
+                        <option value="name" th:selected="${sortBy=='name'}">Name</option>
+                        <option value="price" th:selected="${sortBy=='price'}">Price</option>
+                    </select>
+
+                    <input type="hidden" name="page" th:value="${currentPage}">
+                    <input type="hidden" name="size" th:value="${size}">
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- ================= PRODUCTS GRID ================= -->
+    <div class="container my-5">
+        <div class="row g-4">
+
+            <div class="col-xl-2 col-lg-3 col-md-3 col-sm-6"
+                 th:each="product : ${products.content}">
+                <div class="product-card h-100">
+
+                    <div class="product-img-box">
+                        <img th:src="@{'/uploads/products/' + ${product.imageUrl}}"
+                             alt="Product Image">
+                    </div>
+
+                    <div class="p-3 text-center">
+                        <h6 class="fw-semibold"
+                            th:text="${product.name}">
+                            Product Name
+                        </h6>
+
+                        <p class="price">
+                            ₹ <span th:text="${product.price}">999</span>
+                        </p>
+
+                        <form th:action="@{/user/cart/add/{id}(id=${product.id})}"
+                              method="post">
+                            <button class="btn btn-success btn-sm w-100">
+                                Add to Cart
+                            </button>
+                        </form>
+                    </div>
+
+                </div>
+            </div>
+
+            <!-- ================= NO PRODUCTS ================= -->
+            <div class="col-12"
+                 th:if="${products.totalElements == 0}">
+                <p class="text-center text-muted">
+                    No products available
+                </p>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- ================= PAGINATION ================= -->
+    <nav class="mt-4"
+         th:if="${totalPages > 1}">
+        <ul class="pagination justify-content-center">
+
+            <li class="page-item"
+                th:classappend="${products.first} ? 'disabled'">
+                <a class="page-link"
+                   th:href="@{/shop(page=${currentPage-1},size=${size},sortBy=${sortBy})}">
+                    Prev
+                </a>
+            </li>
+
+            <li class="page-item"
+                th:each="i : ${#numbers.sequence(0, totalPages-1)}"
+                th:classappend="${i==currentPage} ? 'active'">
+                <a class="page-link"
+                   th:href="@{/shop(page=${i},size=${size},sortBy=${sortBy})}"
+                   th:text="${i+1}">
+                </a>
+            </li>
+
+            <li class="page-item"
+                th:classappend="${products.last} ? 'disabled'">
+                <a class="page-link"
+                   th:href="@{/shop(page=${currentPage+1},size=${size},sortBy=${sortBy})}">
+                    Next
+                </a>
+            </li>
+
+        </ul>
+    </nav>
+
+</section>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

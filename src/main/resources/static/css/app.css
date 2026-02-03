@@ -1,0 +1,149 @@
+body {
+    font-family: 'Poppins', sans-serif;
+    background: #f5f7fb;
+}
+
+/* ================= NAVBAR ================= */
+
+.main-navbar {
+    background: linear-gradient(90deg, #0f2027, #203a43, #2c5364);
+    min-height: 56px;
+}
+
+.main-navbar .navbar-brand {
+    font-weight: 700;
+    font-size: 1.4rem;
+    color: #ffffff !important;
+}
+
+.main-navbar .nav-link {
+    color: #ffffff !important;
+    font-weight: 500;
+}
+
+.main-navbar .nav-link:hover {
+    color: #38ef7d !important;
+}
+
+/* Mobile toggler visibility */
+.navbar-dark .navbar-toggler {
+    border-color: rgba(255,255,255,0.5);
+}
+
+.navbar-dark .navbar-toggler-icon {
+    filter: invert(1);
+}
+
+
+/* Page headers */
+.page-header {
+    /* background: linear-gradient(135deg, #11998e, #38ef7d);
+    color: white;
+    padding: 3rem 0; */
+    background: linear-gradient(135deg, #0f766e, #38ef7d);
+    color: white;
+    padding: 3.5rem 0;
+}
+
+/* ===== CART COMPACT STYLE ===== */
+.cart-card {
+    border-radius: 12px;
+}
+
+.cart-card .card-body {
+    padding: 12px 16px;
+}
+
+.cart-card h6 {
+    font-size: 0.9rem;
+}
+
+.cart-card p {
+    font-size: 0.8rem;
+}
+
+.cart-card .btn-sm {
+    padding: 2px 8px;
+    font-size: 0.75rem;
+}
+
+
+/* Cards */
+.card {
+    border: none;
+    border-radius: 16px;
+    box-shadow: 0 12px 30px rgba(0,0,0,.08);
+}
+
+.card:hover {
+    transform: translateY(-4px);
+    transition: .3s;
+}
+
+/* Product image */
+.product-img-box {
+    aspect-ratio: 1/1;
+    background: #f3f4f6;
+}
+
+.product-img-box img {
+    object-fit: contain;
+}
+
+/* Price */
+.price {
+    color: #10b981;
+    font-weight: 600;
+}
+
+/* Buttons */
+.btn-success {
+    background:  linear-gradient(135deg, #38ef7d, #10b981);
+    border: none;
+}
+
+
+.glass {
+    background: rgba(255,255,255,0.85);
+    backdrop-filter: blur(10px);
+    border-radius: 16px;
+    box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+}
+
+
+/* ================= FOOTER ================= */
+
+.footer {
+    background: #111827;   /* slightly black (not pure black) */
+    color: #d1d5db;
+}
+
+.footer h1,
+.footer h3 {
+    color: #ffffff;
+}
+
+.footer p,
+.footer a {
+    color: #d1d5db;
+    text-decoration: none;
+}
+
+.footer a:hover {
+    color: #38ef7d;
+    text-decoration: underline;
+}
+
+
+.footer-bottom {
+    background: #020617;   /* darker than footer */
+    color: #9ca3af;
+}
+
+.footer-bottom a {
+    color: #e5e7eb;
+}
+
+
+
+

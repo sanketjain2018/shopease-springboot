@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="https://www.thymeleaf.org/extras/spring-security"
+      th:replace="layout :: layout(~{::section})">
+
+<section>
+
+    <!-- ================= PAGE HEADER ================= -->
+    <div class="container mb-4">
+        <div class="d-flex justify-content-between align-items-center">
+            <div>
+                <h2 class="fw-bold mb-1">Product Management</h2>
+                <p class="text-muted mb-0">
+                    Manage products securely
+                </p>
+            </div>
+
+            <div sec:authorize="hasRole('ADMIN')">
+                <a th:href="@{/products-ui/add}"
+                   class="btn btn-success">
+                    <i class="bi bi-plus-circle"></i>
+                    Add Product
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- ================= SEARCH & FILTER ================= -->
+    <div class="container mb-4">
+        <form method="get"
+              th:action="@{/products-ui}"
+              class="row g-3 align-items-end">
+
+            <div class="col-md-4">
+                <label class="form-label fw-semibold">
+                    Search
+                </label>
+                <input type="text"
+                       name="keyword"
+                       class="form-control"
+                       placeholder="Search by product name"
+                       th:value="${keyword}">
+            </div>
+
+            <div class="col-md-3">
+                <label class="form-label fw-semibold">
+                    Sort By
+                </label>
+                <select name="sortBy" class="form-select">
+                    <option value="id" th:selected="${sortBy=='id'}">ID</option>
+                    <option value="name" th:selected="${sortBy=='name'}">Name</option>
+                    <option value="price" th:selected="${sortBy=='price'}">Price</option>
+                </select>
+            </div>
+
+            <div class="col-md-2">
+                <label class="form-label fw-semibold">
+                    Page Size
+                </label>
+                <select name="size" class="form-select">
+                    <option value="5" th:selected="${size==5}">5</option>
+                    <option value="10" th:selected="${size==10}">10</option>
+                    <option value="20" th:selected="${size==20}">20</option>
+                </select>
+            </div>
+
+            <div class="col-md-3">
+                <button class="btn btn-dark w-100">
+                    Apply Filters
+                </button>
+            </div>
+
+        </form>
+    </div>
+
+    <!-- ================= PRODUCT TABLE ================= -->
+    <div class="container">
+
+        <div class="card shadow-sm border-0">
+
+            <div class="card-body p-0">
+
+                <table class="table align-middle mb-0">
+
+                    <thead class="table-light">
+                    <tr>
+                        <th>ID</th>
+                        <th>Product Name</th>
+                        <th>Price</th>
+                        <th class="text-center">Actions</th>
+                    </tr>
+                    </thead>
+
+                    <tbody>
+
+                    <tr th:each="product : ${products.content}">
+                        <td th:text="${product.id}"></td>
+
+                        <td class="fw-semibold"
+                            th:text="${product.name}">
+                        </td>
+
+                        <td>
+                            ₹ <span th:text="${product.price}"></span>
+                        </td>
+
+                        <td class="text-center">
+
+                            <div sec:authorize="hasRole('ADMIN')">
+
+                                <a th:href="@{/products-ui/edit/{id}(id=${product.id})}"
+                                   class="btn btn-sm btn-outline-primary me-1">
+                                    <i class="bi bi-pencil"></i>
+                                </a>
+
+                                <form th:action="@{/products-ui/delete/{id}(id=${product.id})}"
+                                      method="post"
+                                      class="d-inline">
+                                    <button class="btn btn-sm btn-outline-danger"
+                                            onclick="return confirm('Delete this product?')">
+                                        <i class="bi bi-trash"></i>
+                                    </button>
+                                </form>
+
+                            </div>
+
+                            <span sec:authorize="hasRole('USER')"
+                                  class="text-muted">
+                                View only
+                            </span>
+
+                        </td>
+                    </tr>
+
+                    <tr th:if="${products.totalElements == 0}">
+                        <td colspan="4"
+                            class="text-center text-muted py-4">
+                            No products found
+                        </td>
+                    </tr>
+
+                    </tbody>
+
+                </table>
+
+            </div>
+        </div>
+
+    </div>
+
+    <!-- ================= PAGINATION ================= -->
+    <nav class="mt-4"
+         th:if="${totalPages > 1}">
+        <ul class="pagination justify-content-center">
+
+            <li class="page-item"
+                th:classappend="${products.first} ? 'disabled'">
+                <a class="page-link"
+                   th:href="@{/products-ui(page=${currentPage-1},size=${size},sortBy=${sortBy},keyword=${keyword})}">
+                    Previous
+                </a>
+            </li>
+
+            <li class="page-item"
+                th:each="i : ${#numbers.sequence(0,totalPages-1)}"
+                th:classappend="${i==currentPage} ? 'active'">
+                <a class="page-link"
+                   th:href="@{/products-ui(page=${i},size=${size},sortBy=${sortBy},keyword=${keyword})}"
+                   th:text="${i+1}">
+                </a>
+            </li>
+
+            <li class="page-item"
+                th:classappend="${products.last} ? 'disabled'">
+                <a class="page-link"
+                   th:href="@{/products-ui(page=${currentPage+1},size=${size},sortBy=${sortBy},keyword=${keyword})}">
+                    Next
+                </a>
+            </li>
+
+        </ul>
+    </nav>
+
+</section>
+</html>

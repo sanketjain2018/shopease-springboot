@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="https://www.thymeleaf.org/extras/spring-security">
+
+<body th:replace="layout :: layout(~{::section})">
+
+<section>
+
+<style>
+    .order-box {
+        background: #fff;
+        border-radius: 12px;
+        padding: 16px;
+        box-shadow: 0 8px 20px rgba(0,0,0,0.08);
+    }
+    .status-badge {
+        font-size: 0.85rem;
+        padding: 6px 12px;
+        border-radius: 20px;
+    }
+</style>
+
+<div class="container py-3">
+
+    <div class="order-box">
+
+        <!-- HEADER -->
+        <div class="d-flex justify-content-between align-items-center mb-3">
+            <h5 class="fw-bold">
+                🧾 Order #<span th:text="${order.id}"></span>
+            </h5>
+
+            <!-- STATUS BADGES (NULL SAFE) -->
+            <span th:if="${order.status == null}"
+                  class="status-badge bg-secondary text-white">
+                UNKNOWN
+            </span>
+
+            <span th:if="${order.status != null and order.status.toString() == 'PLACED'}"
+                  class="status-badge bg-primary text-white">
+                PLACED
+            </span>
+
+            <span th:if="${order.status != null and order.status.toString() == 'SHIPPED'}"
+                  class="status-badge bg-warning text-dark">
+                SHIPPED
+            </span>
+
+            <span th:if="${order.status != null and order.status.toString() == 'DELIVERED'}"
+                  class="status-badge bg-success text-white">
+                DELIVERED
+            </span>
+
+            <span th:if="${order.status != null and order.status.toString() == 'CANCELLED'}"
+                  class="status-badge bg-danger text-white">
+                CANCELLED
+            </span>
+
+        </div>
+
+        <!-- DATE -->
+        <p class="text-muted mb-3">
+            <i class="bi bi-calendar"></i>
+            <span th:text="${#temporals.format(order.orderDate,'dd MMM yyyy HH:mm')}"></span>
+        </p>
+
+        <!-- ITEMS -->
+        <div class="table-responsive">
+            <table class="table table-sm align-middle">
+                <thead class="table-light">
+                <tr>
+                    <th>Product</th>
+                    <th class="text-center">Price</th>
+                    <th class="text-center">Qty</th>
+                    <th class="text-end">Total</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="item : ${order.items}">
+                    <td th:text="${item.product.name}"></td>
+                    <td class="text-center">₹<span th:text="${item.price}"></span></td>
+                    <td class="text-center" th:text="${item.quantity}"></td>
+                    <td class="text-end">
+                        ₹<span th:text="${item.price * item.quantity}"></span>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- TOTAL -->
+        <div class="text-end mt-3 fw-bold text-success">
+            Grand Total: ₹<span th:text="${order.totalAmount}"></span>
+        </div>
+
+    </div>
+
+    <!-- ACTIONS -->
+    <div class="d-flex justify-content-between mt-3">
+
+        <form th:if="${order.status != null and order.status.toString() != 'CANCELLED'}"
+              th:action="@{/user/orders/reorder/{id}(id=${order.id})}"
+              method="post">
+            <button class="btn btn-warning btn-sm">
+                🔁 Reorder
+            </button>
+        </form>
+
+        <a th:href="@{/user/orders}" class="btn btn-secondary btn-sm">
+            ← Back
+        </a>
+
+    </div>
+
+</div>
+
+</section>
+</body>
+</html>

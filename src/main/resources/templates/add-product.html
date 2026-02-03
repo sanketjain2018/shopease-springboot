@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      th:replace="layout :: layout(~{::section})">
+
+<section>
+
+    <!-- ================= PAGE HEADER ================= -->
+    <div class="page-header text-center">
+        <div class="container">
+            <h1 class="fw-bold">Add New Product</h1>
+            <p class="lead">
+                Create and manage products available in the store
+            </p>
+        </div>
+    </div>
+
+    <!-- ================= FORM ================= -->
+    <div class="container my-5">
+
+        <div class="row justify-content-center">
+            <div class="col-lg-6">
+
+                <div class="bg-white border rounded p-4">
+
+                    <h5 class="fw-bold mb-4">Product Information</h5>
+
+                    <form th:action="@{/products-ui/save}"
+                          method="post"
+                          enctype="multipart/form-data">
+
+                        <!-- PRODUCT NAME -->
+                        <div class="mb-3">
+                            <label class="form-label fw-semibold">
+                                Product Name
+                            </label>
+                            <input type="text"
+                                   class="form-control"
+                                   name="name"
+                                   placeholder="Enter product name"
+                                   required>
+                        </div>
+
+                        <!-- PRODUCT IMAGE -->
+                        <div class="mb-3">
+                            <label class="form-label fw-semibold">
+                                Product Image
+                            </label>
+                            <input type="file"
+                                   class="form-control"
+                                   name="image"
+                                   accept="image/*"
+                                   required>
+                            <div class="form-text">
+                                Supported formats: JPG, PNG, WEBP
+                            </div>
+                        </div>
+
+                        <!-- PRICE -->
+                        <div class="mb-4">
+                            <label class="form-label fw-semibold">
+                                Price (₹)
+                            </label>
+                            <input type="number"
+                                   class="form-control"
+                                   name="price"
+                                   step="0.01"
+                                   placeholder="Enter product price"
+                                   required>
+                        </div>
+
+                        <!-- ACTIONS -->
+                        <div class="d-flex justify-content-between">
+
+                            <a th:href="@{/products-ui}"
+                               class="btn btn-outline-secondary">
+                                ← Back to Products
+                            </a>
+
+                            <button class="btn btn-success">
+                                Save Product
+                            </button>
+
+                        </div>
+
+                    </form>
+
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+
+</section>
+</html>
