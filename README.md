@@ -1,140 +1,76 @@
-\# 🛒 ShopEase – E-Commerce Web Application
+🛒 ShopEase – E-Commerce Web Application
 
+ShopEase is a full-stack e-commerce web application built using Spring Boot MVC and Thymeleaf, designed to replicate a real-world online shopping workflow.
 
+The project focuses on clean architecture, security, global error handling, and reusable UI design, rather than just basic CRUD operations.
 
-ShopEase is a full-stack e-commerce web application built using \*\*Spring Boot\*\* and \*\*Thymeleaf\*\*, designed to simulate a real-world online shopping platform.  
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-The project focuses on \*\*clean architecture\*\*, \*\*security\*\*, \*\*error handling\*\*, and \*\*reusable UI components\*\*.
+🚀 Project Highlights
 
+Built as a production-style Spring Boot MVC application
 
+Focus on maintainability, security, and user experience
 
-This application was developed as a hands-on learning project to gain real-world experience with backend-driven web applications.
+Uses reusable layouts and fragments for consistent UI
 
+Implements proper exception handling and custom error pages
 
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
----
+🔥 Key Features
+👤 Authentication & Authorization
 
+User registration and login
 
+Role-based access control (USER / ADMIN)
 
-\## 🚀 Key Features
+Protected routes using Spring Security
 
+Custom 403 – Access Denied page
 
+🛍 Shopping Workflow
 
-\### 👤 Authentication \& Authorization
+Product listing with pagination and sorting
 
-\- User registration and login
+Product details view
 
-\- Role-based access control (\*\*USER / ADMIN\*\*)
+Add to cart / remove from cart
 
-\- Secure routes using Spring Security
+Place orders and view order history
 
-\- Custom access-denied (403) handling
+User dashboard and admin dashboard
 
+🎨 UI & Layout
 
+Thymeleaf layout with reusable fragments
+(Header, Navbar, Footer)
 
-\### 🛍 Product \& Shopping Flow
+Responsive UI using Bootstrap 5
 
-\- Product listing with pagination \& sorting
+Balanced color system for header, navbar, content, and footer
 
-\- Product details page
+Static pages: Home, About, Contact
 
-\- Add to cart / remove from cart
+⚠ Error Handling
 
-\- Place orders with order history
+Global exception handling using @ControllerAdvice
 
-\- User dashboard \& admin dashboard
+Custom error pages:
 
+404 – Page Not Found
 
+403 – Access Denied
 
-\### 🧩 UI \& Layout
+500 – Internal Server Error
 
-\- Reusable layout using Thymeleaf fragments
+Default Whitelabel error page disabled
 
-\- Common header, navbar, and footer
+📝 Logging
 
-\- Responsive design with Bootstrap 5
+SLF4J logging for request tracking
 
-\- Clean and balanced color system
+Informational and debug logs for key operations   
 
-
-
-\### ⚠ Error Handling
-
-\- Global exception handling using `@ControllerAdvice`
-
-\- Custom error pages:
-
-&nbsp; - 404 – Page Not Found
-
-&nbsp; - 403 – Access Denied
-
-&nbsp; - 500 – Internal Server Error
-
-\- No Whitelabel error pages
-
-
-
-\### 📝 Logging
-
-\- SLF4J logging for controller requests
-
-\- Debug and info logs for important operations
-
-
-
----
-
-
-
-\## 🛠 Tech Stack
-
-
-
-\*\*Backend\*\*
-
-\- Java
-
-\- Spring Boot
-
-\- Spring MVC
-
-\- Spring Security
-
-\- Spring Data JPA (Hibernate)
-
-
-
-\*\*Frontend\*\*
-
-\- Thymeleaf
-
-\- HTML5 / CSS3
-
-\- Bootstrap 5
-
-
-
-\*\*Database\*\*
-
-\- MySQL / H2 (for development)
-
-
-
-\*\*Tools\*\*
-
-\- Maven
-
-\- Git \& GitHub
-
-
-
----
-
-
-
-\## 📂 Project Structure (Simplified)
-
-
-
-
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
