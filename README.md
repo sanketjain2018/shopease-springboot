@@ -74,3 +74,71 @@ Informational and debug logs for key operations
 
 ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
+🛠 Tech Stack
+Backend
+
+Java 17
+
+Spring Boot 3.x
+
+Spring MVC
+
+Spring Security
+
+Spring Data JPA (Hibernate)
+
+Frontend
+
+Thymeleaf
+
+HTML5 / CSS3
+
+Bootstrap 5
+
+Database
+
+MySQL (main database)
+
+H2 (development/testing)
+
+Tools
+
+Maven
+
+Git & GitHub
+
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+📂 Project Structure (Simplified)
+src
+ └── main
+     ├── java
+     │   └── in.sj
+     │       ├── controller
+     │       ├── service
+     │       ├── repository
+     │       └── exception
+     └── resources
+         ├── templates
+         │   ├── fragments
+         │   ├── error
+         │   └── pages
+         └── static
+             ├── css
+             └── images
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
