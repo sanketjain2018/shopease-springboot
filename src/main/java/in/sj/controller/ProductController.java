@@ -106,7 +106,6 @@ public class ProductController {
 	 * return "redirect:/products-ui"; }
 	 */
     
- // ================= SAVE PRODUCT WITH IMAGE (CLOUDINARY) =================
     @PostMapping("/products-ui/save")
     public String saveProduct(
             @ModelAttribute Product product,
@@ -117,19 +116,17 @@ public class ProductController {
                 product.getName(), product.getPrice());
 
         if (imageFile == null || imageFile.isEmpty()) {
-            log.warn("PRODUCT SAVE FAILED | image missing | name={}", product.getName());
+            log.error("IMAGE FILE IS EMPTY");
             throw new RuntimeException("Product image is required");
         }
 
-        // Upload to Cloudinary
         String imageUrl = cloudinaryService.uploadFile(imageFile);
+        log.info("IMAGE URL FROM CLOUDINARY = {}", imageUrl);
 
-        // Save URL in DB
         product.setImageUrl(imageUrl);
         productService.save(product);
 
-        log.info("PRODUCT SAVED SUCCESSFULLY | id={} | name={}",
-                product.getId(), product.getName());
+        log.info("PRODUCT SAVED SUCCESSFULLY | name={}", product.getName());
 
         return "redirect:/products-ui";
     }

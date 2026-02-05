@@ -14,12 +14,16 @@ import lombok.RequiredArgsConstructor;
 public class CloudinaryService {
 	 private final Cloudinary cloudinary;
 
-	    public String uploadFile(MultipartFile file) {
-	        try {
-	            Map uploadResult = cloudinary.uploader().upload(file.getBytes(), Map.of());
-	            return uploadResult.get("secure_url").toString(); // HTTPS URL
-	        } catch (Exception e) {
-	            throw new RuntimeException("Image upload failed", e);
-	        }
-	    }
+	 public String uploadFile(MultipartFile file) {
+		    try {
+		        Map uploadResult = cloudinary.uploader().upload(file.getBytes(), Map.of());
+		        String url = uploadResult.get("secure_url").toString();
+		        System.out.println("CLOUDINARY UPLOAD SUCCESS: " + url);
+		        return url;
+		    } catch (Exception e) {
+		        e.printStackTrace(); // <-- IMPORTANT
+		        throw new RuntimeException("Image upload failed", e);
+		    }
+		}
+
 }

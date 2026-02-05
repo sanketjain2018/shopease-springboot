@@ -26,7 +26,7 @@ public class Product {
 	/*
 	 * @Column(name = "image_name", nullable = false) private String imageUrl;
 	 */
-	@Column(name = "image_url")
+	@Column(name = "image_url", nullable = false, length = 500)
 	private String imageUrl;
 
 }
