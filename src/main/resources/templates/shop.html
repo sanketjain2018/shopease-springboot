@@ -42,10 +42,13 @@
                  th:each="product : ${products.content}">
                 <div class="product-card h-100">
 
-                    <div class="product-img-box">
+                   <!--  <div class="product-img-box">
                         <img th:src="@{'/uploads/products/' + ${product.imageUrl}}"
                              alt="Product Image">
-                    </div>
+                    </div> -->   <!-- CHANGE FOR CLOUDNARY --> 
+                    
+                    <img th:src="${product.imageUrl}" class="img-fluid">
+                    
 
                     <div class="p-3 text-center">
                         <h6 class="fw-semibold"

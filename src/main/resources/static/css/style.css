@@ -1,13 +1,19 @@
-body {
+html,body {
     font-family: 'Poppins', sans-serif;
     background: #f5f7fb;
+     max-width: 100%;
+    overflow-x: hidden;
 }
 
 
 .page-header {
     background: linear-gradient(135deg, #11998e, #38ef7d);
     color: white;
-    padding: 3rem 0;
+    @media (max-width: 576px) {
+    .page-header {
+        padding: 1.5rem 1rem;
+    }
+}
 }
 
 .product-card {
@@ -16,6 +22,7 @@ body {
     box-shadow: 0 15px 35px rgba(0,0,0,0.1);
     transition: transform .3s ease;
     overflow: hidden;
+    max-width: 100%;
 }
 
 .product-card:hover {
@@ -23,7 +30,7 @@ body {
 }
 
 .product-img-box {
-    width: 100%;
+    max-width: 100%;
     aspect-ratio: 1/1;
     overflow: hidden;
     background: #f2f2f2;
@@ -42,6 +49,24 @@ body {
     font-size: 1.2rem;
     font-weight: 600;
     color: #11998e;
+}
+
+@media (max-width: 576px) {
+    .page-header {
+        padding: 1.5rem 1rem;
+    }
+
+    h1 {
+        font-size: 1.6rem;
+    }
+
+    h2 {
+        font-size: 1.3rem;
+    }
+
+    .lead {
+        font-size: 1rem;
+    }
 }
 
 footer {

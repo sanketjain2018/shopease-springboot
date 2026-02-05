@@ -1,12 +1,6 @@
 package in.sj.controller;
 
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.nio.file.StandardCopyOption;
 import java.util.List;
-import java.util.UUID;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -16,10 +10,15 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
 import in.sj.entity.Product;
+import in.sj.service.CloudinaryService;
 import in.sj.service.ProductService;
 import lombok.RequiredArgsConstructor;
 
@@ -31,6 +30,8 @@ public class ProductController {
             LoggerFactory.getLogger(ProductController.class);
 
     private final ProductService productService;
+    private final CloudinaryService cloudinaryService;
+
 
     // ================= LIST + SEARCH + SORT + PAGINATION (ADMIN) =================
     @GetMapping("/products-ui")
@@ -77,11 +78,40 @@ public class ProductController {
     }
 
     // ================= SAVE PRODUCT WITH IMAGE =================
+	/*
+	 * @PostMapping("/products-ui/save") public String saveProduct(
+	 * 
+	 * @ModelAttribute Product product,
+	 * 
+	 * @RequestParam("image") MultipartFile imageFile ) throws IOException {
+	 * 
+	 * log.info("SAVE PRODUCT REQUEST | name={} | price={}", product.getName(),
+	 * product.getPrice());
+	 * 
+	 * if (imageFile == null || imageFile.isEmpty()) {
+	 * log.warn("PRODUCT SAVE FAILED | image missing | name={}", product.getName());
+	 * throw new RuntimeException("Product image is required"); }
+	 * 
+	 * String fileName = UUID.randomUUID() + "_" + imageFile.getOriginalFilename();
+	 * Path uploadPath = Paths.get("uploads/products");
+	 * 
+	 * Files.createDirectories(uploadPath); Files.copy( imageFile.getInputStream(),
+	 * uploadPath.resolve(fileName), StandardCopyOption.REPLACE_EXISTING );
+	 * 
+	 * product.setImageUrl(fileName); productService.save(product);
+	 * 
+	 * log.info("PRODUCT SAVED SUCCESSFULLY | id={} | name={}", product.getId(),
+	 * product.getName());
+	 * 
+	 * return "redirect:/products-ui"; }
+	 */
+    
+ // ================= SAVE PRODUCT WITH IMAGE (CLOUDINARY) =================
     @PostMapping("/products-ui/save")
     public String saveProduct(
             @ModelAttribute Product product,
             @RequestParam("image") MultipartFile imageFile
-    ) throws IOException {
+    ) {
 
         log.info("SAVE PRODUCT REQUEST | name={} | price={}",
                 product.getName(), product.getPrice());
@@ -91,17 +121,11 @@ public class ProductController {
             throw new RuntimeException("Product image is required");
         }
 
-        String fileName = UUID.randomUUID() + "_" + imageFile.getOriginalFilename();
-        Path uploadPath = Paths.get("uploads/products");
+        // Upload to Cloudinary
+        String imageUrl = cloudinaryService.uploadFile(imageFile);
 
-        Files.createDirectories(uploadPath);
-        Files.copy(
-                imageFile.getInputStream(),
-                uploadPath.resolve(fileName),
-                StandardCopyOption.REPLACE_EXISTING
-        );
-
-        product.setImageUrl(fileName);
+        // Save URL in DB
+        product.setImageUrl(imageUrl);
         productService.save(product);
 
         log.info("PRODUCT SAVED SUCCESSFULLY | id={} | name={}",
@@ -109,6 +133,9 @@ public class ProductController {
 
         return "redirect:/products-ui";
     }
+
+    
+    
 
     // ================= EDIT PRODUCT PAGE =================
     @GetMapping("/products-ui/edit/{id}")

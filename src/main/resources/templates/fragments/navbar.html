@@ -1,4 +1,4 @@
- 
+<!--  
  <nav th:fragment="navbar"
      class="navbar navbar-expand-lg navbar-dark main-navbar">
 
@@ -6,7 +6,7 @@
 
         
 
-        <!-- TOGGLER (MOBILE) -->
+        TOGGLER (MOBILE)
         <button class="navbar-toggler"
                 type="button"
                 data-bs-toggle="collapse"
@@ -17,7 +17,7 @@
             <span class="navbar-toggler-icon"></span>
         </button>
 
-        <!-- MENU -->
+        MENU
         <div class="collapse navbar-collapse justify-content-center"
              id="navbarCollapse">
 
@@ -49,4 +49,63 @@
 
     </div>
 </nav>
- 
+  -->
+  
+  
+  
+  <nav th:fragment="navbar"
+     class="navbar navbar-expand-lg navbar-dark main-navbar">
+
+    <div class="container-fluid px-3 px-lg-5">
+
+        <!-- BRAND -->
+        <a class="navbar-brand fw-bold" th:href="@{/}">
+            MyStore
+        </a>
+
+        <!-- TOGGLER (MOBILE) -->
+        <button class="navbar-toggler"
+                type="button"
+                data-bs-toggle="collapse"
+                data-bs-target="#navbarCollapse"
+                aria-controls="navbarCollapse"
+                aria-expanded="false"
+                aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <!-- MENU -->
+        <div class="collapse navbar-collapse"
+             id="navbarCollapse">
+
+            <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+
+                <li class="nav-item">
+                    <a th:href="@{/}" class="nav-link">Home</a>
+                </li>
+
+                <li class="nav-item">
+                    <a th:href="@{/shop}" class="nav-link">Products</a>
+                </li>
+
+                <li class="nav-item">
+                    <a th:href="@{/user/cart}" class="nav-link">Cart</a>
+                </li>
+
+                <li class="nav-item">
+                    <a th:href="@{/user/orders}" class="nav-link">My Orders</a>
+                </li>
+
+                <li class="nav-item">
+                    <a th:href="@{/about}" class="nav-link">About</a>
+                </li>
+
+                <li class="nav-item">
+                    <a th:href="@{/contact}" class="nav-link">Contact</a>
+                </li>
+            </ul>
+        </div>
+
+    </div>
+</nav>
+  

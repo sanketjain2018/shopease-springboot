@@ -70,8 +70,15 @@
 		    <groupId>org.springframework.boot</groupId>
 		    <artifactId>spring-boot-starter-security</artifactId>
 		</dependency>
+		<!-- cloudinary -->
+		<dependency>
+			<groupId>com.cloudinary</groupId>
+			<artifactId>cloudinary-http44</artifactId>
+			<version>1.37.0</version>
+		</dependency>
 
-        <!-- Devtools -->
+
+		<!-- Devtools -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-devtools</artifactId>
@@ -79,13 +86,13 @@
             <optional>true</optional>
         </dependency>
 
-        <!-- Testing -->
+		<!-- Testing -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
         </dependency>
-		
+
 		<!-- ADD ROLE-BASED NAVBAR + LOGOUT-->
 		<dependency>
 	    	<groupId>org.thymeleaf.extras</groupId>

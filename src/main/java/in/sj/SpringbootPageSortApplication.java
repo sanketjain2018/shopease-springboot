@@ -12,8 +12,9 @@ public class SpringbootPageSortApplication {
 		
 		/*
 		 * BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
-		 * System.out.println(encoder.encode("admin123"));  username : admin  pass : admin123 
-		 */
+		 * System.out.println("generated code::"+encoder.encode("admin123"));
+		 */ //username : admin  pass : admin123 
+		 
 
 
 	}
