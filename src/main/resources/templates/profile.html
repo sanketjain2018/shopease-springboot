@@ -1,83 +1,147 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
       xmlns:sec="https://www.thymeleaf.org/extras/spring-security"
-      th:replace="layout :: layout(~{::section})">
+      th:replace="~{layout :: layout(~{::section})}">
 
 <section>
 
-    <div class="container my-5" style="max-width: 600px;">
+    <div class="container my-5">
+        <div class="row justify-content-center">
 
-        <h3 class="fw-bold mb-4 text-center">
-            My Profile
-        </h3>
+            <div class="col-12 col-md-8 col-lg-6">
 
-        <!-- SUCCESS MESSAGE -->
-        <div th:if="${param.success}"
-             class="alert alert-success text-center">
-            Profile updated successfully
-        </div>
+                <h3 class="fw-bold mb-4 text-center">
+                    My Profile
+                </h3>
 
-        <div class="card shadow-sm border-0">
+                <!-- SUCCESS MESSAGE -->
+                <div th:if="${param.success}"
+                     class="alert alert-success text-center">
+                    Profile updated successfully
+                </div>
 
-            <div class="card-body p-4">
+                <div class="card shadow-sm border-0">
+                    <div class="card-body p-4">
 
-                <form th:action="@{/user/profile}"
-                      method="post"
-                      th:object="${user}">
+                        <form th:action="@{/user/profile}"
+                              method="post"
+                              th:object="${user}"
+                              enctype="multipart/form-data" autocomplete="off">
 
-                    <!-- USERNAME -->
-                    <div class="mb-3">
-                        <label class="form-label fw-semibold">
-                            Username
-                        </label>
-                        <input type="text"
-                               class="form-control"
-                               th:value="*{username}"
-                               disabled>
+                            <!-- PROFILE IMAGE -->
+                            <div class="text-center mb-4">
+                                <img th:src="${user.profileImageUrl != null ? user.profileImageUrl : '/images/default-user.png'}"
+                                     alt="Profile Image"
+                                     class="rounded-circle mb-2"
+                                     style="width: 120px; height: 120px; object-fit: cover;">
+
+                                <div>
+                                    <input type="file"
+                                           name="image"
+                                           class="form-control form-control-sm"
+                                           accept="image/*">
+                                </div>
+                                <small class="text-muted">Upload new profile picture</small>
+                            </div>
+
+                            <!-- USERNAME (READONLY) -->
+                            <div class="mb-3">
+                                <label class="form-label fw-semibold">
+                                    Username
+                                </label>
+                                <input type="text"
+                                       class="form-control"
+                                       th:value="*{username}"
+                                       readonly>
+                            </div>
+
+                            <!-- EMAIL (READONLY) -->
+                            <div class="mb-3">
+                                <label class="form-label fw-semibold">
+                                    Email
+                                </label>
+                                <input type="email"
+                                       class="form-control"
+                                       th:value="*{email}"
+                                       readonly>
+                            </div>
+
+                            <!-- NAME -->
+                            <div class="mb-3">
+                                <label class="form-label fw-semibold">
+                                    Full Name
+                                </label>
+                                <input type="text"
+                                       class="form-control"
+                                       th:field="*{name}"
+                                       required>
+                            </div>
+
+                            <hr>
+
+                            <h6 class="fw-bold mb-3">Address Details</h6>
+
+                            <!-- ADDRESS LINE -->
+                            <div class="mb-3">
+                                <label class="form-label fw-semibold">
+                                    Address
+                                </label>
+                                <input type="text"
+                                       class="form-control"
+                                       th:field="*{addressLine1}"
+                                       placeholder="House no, Street, Area">
+                            </div>
+
+                            <!-- CITY -->
+                            <div class="mb-3">
+                                <label class="form-label fw-semibold">
+                                    City
+                                </label>
+                                <input type="text"
+                                       class="form-control"
+                                       th:field="*{city}">
+                            </div>
+
+                            <!-- STATE -->
+                            <div class="mb-3">
+                                <label class="form-label fw-semibold">
+                                    State
+                                </label>
+                                <input type="text"
+                                       class="form-control"
+                                       th:field="*{state}">
+                            </div>
+
+                            <!-- PINCODE -->
+                            <div class="mb-4">
+                                <label class="form-label fw-semibold">
+                                    Pincode
+                                </label>
+                                <input type="text"
+                                       class="form-control"
+                                       th:field="*{pincode}">
+                            </div>
+
+                            <!-- ACTIONS -->
+                            <div class="d-flex justify-content-between">
+                                <button class="btn btn-success">
+                                    Save Changes
+                                </button>
+
+                                <a th:href="@{/user/dashboard}"
+                                   class="btn btn-outline-secondary">
+                                    Cancel
+                                </a>
+                            </div>
+
+                        </form>
+
                     </div>
-
-                    <!-- NAME -->
-                    <div class="mb-3">
-                        <label class="form-label fw-semibold">
-                            Name
-                        </label>
-                        <input type="text"
-                               class="form-control"
-                               th:field="*{name}"
-                               required>
-                    </div>
-
-                    <!-- EMAIL -->
-                    <div class="mb-4">
-                        <label class="form-label fw-semibold">
-                            Email
-                        </label>
-                        <input type="email"
-                               class="form-control"
-                               th:field="*{email}"
-                               required>
-                    </div>
-
-                    <!-- ACTIONS -->
-                    <div class="d-flex justify-content-between">
-
-                        <button class="btn btn-success">
-                            Update Profile
-                        </button>
-
-                        <a th:href="@{/user/dashboard}"
-                           class="btn btn-outline-secondary">
-                            Cancel
-                        </a>
-
-                    </div>
-
-                </form>
+                </div>
 
             </div>
 
         </div>
-
     </div>
 
 </section>

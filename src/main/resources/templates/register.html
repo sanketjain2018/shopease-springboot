@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
-      th:replace="layout :: layout(~{::section})">
+       th:replace="~{layout :: layout(~{::section})}">
 
 <section>
 
@@ -23,7 +23,7 @@
                         </p>
 
                         <!-- REGISTER FORM -->
-                        <form th:action="@{/register}" method="post">
+                        <form th:action="@{/register}" method="post" autocomplete="off">
 
                             <div class="mb-3">
                                 <label class="form-label fw-semibold">

@@ -77,34 +77,7 @@ public class ProductController {
         return "add-product";
     }
 
-    // ================= SAVE PRODUCT WITH IMAGE =================
-	/*
-	 * @PostMapping("/products-ui/save") public String saveProduct(
-	 * 
-	 * @ModelAttribute Product product,
-	 * 
-	 * @RequestParam("image") MultipartFile imageFile ) throws IOException {
-	 * 
-	 * log.info("SAVE PRODUCT REQUEST | name={} | price={}", product.getName(),
-	 * product.getPrice());
-	 * 
-	 * if (imageFile == null || imageFile.isEmpty()) {
-	 * log.warn("PRODUCT SAVE FAILED | image missing | name={}", product.getName());
-	 * throw new RuntimeException("Product image is required"); }
-	 * 
-	 * String fileName = UUID.randomUUID() + "_" + imageFile.getOriginalFilename();
-	 * Path uploadPath = Paths.get("uploads/products");
-	 * 
-	 * Files.createDirectories(uploadPath); Files.copy( imageFile.getInputStream(),
-	 * uploadPath.resolve(fileName), StandardCopyOption.REPLACE_EXISTING );
-	 * 
-	 * product.setImageUrl(fileName); productService.save(product);
-	 * 
-	 * log.info("PRODUCT SAVED SUCCESSFULLY | id={} | name={}", product.getId(),
-	 * product.getName());
-	 * 
-	 * return "redirect:/products-ui"; }
-	 */
+   
     
     @PostMapping("/products-ui/save")
     public String saveProduct(
@@ -173,12 +146,12 @@ public class ProductController {
         return "redirect:/products-ui";
     }
 
-    // ================= SHOP PAGE (USER) =================
     @GetMapping("/shop")
     public String shopPage(
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "12") int size,
             @RequestParam(defaultValue = "id") String sortBy,
+            @RequestParam(required = false) String keyword,
             Model model) {
 
         if (!List.of("id", "name", "price").contains(sortBy)) {
@@ -186,13 +159,21 @@ public class ProductController {
             sortBy = "id";
         }
 
-        log.info("SHOP PAGE | page={} | size={} | sortBy={}", page, size, sortBy);
+        log.info("SHOP PAGE | page={} | size={} | sortBy={} | keyword={}", page, size, sortBy, keyword);
 
         Pageable pageable = PageRequest.of(page, size, Sort.by(sortBy));
-        Page<Product> productPage = productService.getAllProducts(pageable);
 
-        log.debug("SHOP PRODUCTS FETCHED | count={}",
-                productPage.getNumberOfElements());
+        Page<Product> productPage;
+
+        if (keyword != null && !keyword.trim().isEmpty()) {
+            // 🔍 SEARCH MODE
+            productPage = productService.searchProducts(keyword.trim(), pageable);
+            model.addAttribute("keyword", keyword);
+        } else {
+            // 📦 NORMAL MODE
+            productPage = productService.getAllProducts(pageable);
+            model.addAttribute("keyword", "");
+        }
 
         model.addAttribute("products", productPage);
         model.addAttribute("currentPage", page);
@@ -202,4 +183,5 @@ public class ProductController {
 
         return "shop";
     }
+    
 }

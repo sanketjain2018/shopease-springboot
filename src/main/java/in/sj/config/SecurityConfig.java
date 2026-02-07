@@ -16,23 +16,27 @@ public class SecurityConfig {
 
 		http.csrf(csrf -> csrf.disable())
 
-				.authorizeHttpRequests(auth -> auth
+		.authorizeHttpRequests(auth -> auth
 
-						// PUBLIC
-						.requestMatchers("/", "/login", "/register", "/css/**", "/js/**", "/uploads/**").permitAll()
+			    // PUBLIC
+			    .requestMatchers("/", "/login", "/register","/forgot-password", "/reset-password", "/css/**", "/js/**", "/uploads/**").permitAll()
 
-						// SHOP (NORMAL USER)
-						.requestMatchers("/shop").hasAnyRole("USER", "ADMIN")
+			    // SHOP (NORMAL USER)
+			    .requestMatchers("/shop").hasAnyRole("USER", "ADMIN")
 
-						// ADMIN PRODUCT MANAGEMENT
-						.requestMatchers("/admin/**", "/products-ui/add", "/products-ui/save", "/products-ui/edit/**",
-								"/products-ui/update", "/products-ui/delete/**")
-						.hasRole("ADMIN")
+			    // USER PAGES (ORDERS, CART, ETC)
+			    .requestMatchers("/user/**").hasRole("USER")
 
-						// PRODUCT LIST (TABLE VIEW)
-						.requestMatchers("/products-ui").hasAnyRole("ADMIN")
+			    // ADMIN PRODUCT MANAGEMENT
+			    .requestMatchers("/admin/**", "/products-ui/add", "/products-ui/save", "/products-ui/edit/**",
+			            "/products-ui/update", "/products-ui/delete/**")
+			    .hasRole("ADMIN")
 
-						.anyRequest().authenticated())
+			    // PRODUCT LIST (TABLE VIEW)
+			    .requestMatchers("/products-ui").hasAnyRole("ADMIN")
+
+			    .anyRequest().authenticated())
+
 
 				.formLogin(form -> form.loginPage("/login").successHandler((request, response, authentication) -> {
 

@@ -137,4 +137,9 @@ public class CartService {
         log.info("CART CLEARED | user={} | itemsRemoved={}",
                 username, items.size());
     }
+    
+    public long countCartItemsByUsername(String username) {
+        return cartRepository.countByUsername(username);
+    }
+
 }

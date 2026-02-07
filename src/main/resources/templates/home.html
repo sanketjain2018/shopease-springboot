@@ -1,8 +1,10 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
       xmlns:sec="https://www.thymeleaf.org/extras/spring-security"
-      th:replace="layout :: layout(~{::section})">
-
+        th:replace="~{layout :: layout(~{::section})}"
+        
+        >
+<!-- th:replace="layout :: layout(~{::section})" -->
 <section>
 
     <!-- ================= HERO ================= -->

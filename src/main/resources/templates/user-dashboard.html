@@ -1,7 +1,8 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
       xmlns:sec="https://www.thymeleaf.org/extras/spring-security"
-      th:replace="layout :: layout(~{::section})">
+      th:replace="~{layout :: layout(~{::section})}"
+>
 
 <section>
 
@@ -36,7 +37,7 @@
                             <div>
                                 <h6 class="text-muted">Total Orders</h6>
                                 <h3 class="fw-bold mb-0">
-                                    <span th:text="${orderCount ?: 0}">0</span>
+                                    <span th:text="${totalOrders}">0</span>
                                 </h3>
                             </div>
                             <i class="bi bi-bag-check fs-2 text-primary"></i>
@@ -52,7 +53,7 @@
                             <div>
                                 <h6 class="text-muted">Cart Items</h6>
                                 <h3 class="fw-bold mb-0">
-                                    <span th:text="${cartCount ?: 0}">0</span>
+                                     <span th:text="${cartItems}">0</span>
                                 </h3>
                             </div>
                             <i class="bi bi-cart fs-2 text-warning"></i>

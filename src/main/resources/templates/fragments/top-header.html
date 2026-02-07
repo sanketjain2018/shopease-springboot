@@ -11,13 +11,20 @@
 				</a>
 			</div>
 
+
 			<!-- SEARCH -->
 			<div class="col-md-6 my-2 my-md-0">
-				<div class="input-group">
-					<input type="text" class="form-control"
-						placeholder="Search products...">
-					<button class="btn btn-dark">🔍</button>
-				</div>
+				<form th:action="@{/shop}" method="get" autocomplete="off">
+					<div class="input-group">
+						<input type="text" name="keyword" class="form-control"
+							placeholder="Search products..." th:value="${keyword}">
+						<button class="btn btn-dark" type="submit">🔍</button>
+					</div>
+
+					<!-- keep pagination & sorting if present -->
+					<input type="hidden" name="size" th:value="${size}"> <input
+						type="hidden" name="sortBy" th:value="${sortBy}">
+				</form>
 			</div>
 
 			<!-- USER + CART -->
@@ -68,57 +75,7 @@
 					</div>
 
 
-					<!--  <!-- ACCOUNT -->
-					<!-- 
-                    <div class="dropdown">
 
-                        <a class="dropdown-toggle text-decoration-none text-dark"
-                           data-bs-toggle="dropdown">
-                            👋 <span sec:authorize="isAuthenticated()"
-                                    sec:authentication="name">Guest</span>
-                        </a>
-
-                        <ul class="dropdown-menu dropdown-menu-end">
-
-                            GUEST
-                            <li sec:authorize="!isAuthenticated()">
-                                <a class="dropdown-item" th:href="@{/login}">Login</a>
-                            </li>
-                            <li sec:authorize="!isAuthenticated()">
-                                <a class="dropdown-item" th:href="@{/register}">Register</a>
-                            </li>
-
-                            USER DASHBOARD
-                            <li sec:authorize="hasRole('USER')">
-                                <a class="dropdown-item"
-                                   th:href="@{/user/dashboard}">
-                                    📊 My Dashboard
-                                </a>
-                            </li>
-
-                            ADMIN DASHBOARD
-                            <li sec:authorize="hasRole('ADMIN')">
-                                <a class="dropdown-item"
-                                   th:href="@{/admin/dashboard}">
-                                    🛠 Admin Dashboard
-                                </a>
-                            </li>
-
-                            <li sec:authorize="isAuthenticated()">
-                                <hr class="dropdown-divider">
-                            </li>
-
-                            LOGOUT
-                            <li sec:authorize="isAuthenticated()">
-                                <form th:action="@{/logout}" method="post">
-                                    <button class="dropdown-item text-danger">
-                                        🚪 Logout
-                                    </button>
-                                </form>
-                            </li>
-
-                        </ul>
-                    </div> -->
 
 					<!-- CART -->
 					<a th:href="@{/user/cart}" class="text-dark text-decoration-none">

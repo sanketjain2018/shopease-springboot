@@ -7,6 +7,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 
 import in.sj.entity.User;
 import in.sj.service.UserService;
@@ -31,9 +33,12 @@ public class UserProfileController {
 
     // ================= UPDATE PROFILE =================
     @PostMapping("/profile")
-    public String updateProfile(User user, Principal principal) {
+    public String updateProfile(User formUser,
+                                @RequestParam(value = "image", required = false) MultipartFile image,
+                                Principal principal) {
 
-        userService.updateProfile(principal.getName(), user);
+        userService.updateProfile(principal.getName(), formUser, image);
+
         return "redirect:/user/profile?success";
     }
 }

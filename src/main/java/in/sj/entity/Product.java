@@ -22,11 +22,7 @@ public class Product {
 
 	private Integer stock;
 
-	// Stores only the IMAGE FILE NAME, not the image itself CHANGE FOR CLOUDINARY
-	/*
-	 * @Column(name = "image_name", nullable = false) private String imageUrl;
-	 */
-	@Column(name = "image_url", nullable = false, length = 500)
+	@Column(name = "image_url", nullable = true, length = 500)
 	private String imageUrl;
 
 }

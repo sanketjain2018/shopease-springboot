@@ -22,71 +22,76 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class OrderController {
 
-    private static final Logger log =
-            LoggerFactory.getLogger(OrderController.class);
+	private static final Logger log = LoggerFactory.getLogger(OrderController.class);
 
-    private final OrderRepository orderRepository;
-    private final OrderService orderService;
+	private final OrderRepository orderRepository;
+	private final OrderService orderService;
 
-    // ================= MY ORDERS PAGE =================
-    @GetMapping
-    public String orders(Model model, Principal principal) {
+	// ================= MY ORDERS PAGE =================
+	@GetMapping
+	public String orders(Model model, Principal principal) {
 
-        String username = principal.getName();
-        log.info("VIEW ORDERS | user={}", username);
+		String username = principal.getName();
+		log.info("VIEW ORDERS | user={}", username);
 
-        List<Order> orders = orderRepository.findByUsername(username);
-        log.debug("ORDERS FETCHED | user={} | count={}", username, orders.size());
+		List<Order> orders = orderRepository.findByUsername(username);
+		log.debug("ORDERS FETCHED | user={} | count={}", username, orders.size());
 
-        model.addAttribute("orders", orders);
-        return "orders";
-    }
+		model.addAttribute("orders", orders);
+		return "orders";
+	}
 
-    // ================= ORDER DETAILS PAGE =================
-    @GetMapping("/{id}")
-    public String orderDetails(@PathVariable Long id,
-                               Model model,
-                               Principal principal) {
+	// ================= ORDER DETAILS PAGE =================
 
-        String username = principal.getName();
-        log.info("VIEW ORDER DETAILS | user={} | orderId={}", username, id);
+	@GetMapping("/{id}")
+	public String orderDetails(@PathVariable Long id, Model model, Principal principal) {
 
-        Order order = orderRepository.findById(id)
-                .orElseThrow(() -> {
-                    log.error("ORDER NOT FOUND | orderId={}", id);
-                    return new RuntimeException("Order not found");
-                });
+		String username = principal.getName();
+		log.info("VIEW ORDER DETAILS | user={} | orderId={}", username, id);
 
-        // 🔐 SECURITY CHECK
-        if (!order.getUsername().equals(username)) {
-            log.warn("UNAUTHORIZED ORDER ACCESS | user={} | orderOwner={} | orderId={}",
-                    username, order.getUsername(), id);
-            throw new RuntimeException("Access denied");
-        }
+		Order order = orderRepository.findByIdWithItems(id).orElseThrow(() -> new RuntimeException("Order not found"));
 
-        model.addAttribute("order", order);
-        return "order-details";
-    }
+		if (!order.getUsername().equals(username)) {
+			throw new RuntimeException("Access denied");
+		}
 
-    // ================= CANCEL ORDER =================
-    @PostMapping("/cancel/{id}")
-    public String cancelOrder(@PathVariable Long id, Principal principal) {
+		model.addAttribute("order", order);
+		return "order-details";
+	}
 
-        String username = principal.getName();
-        log.info("CANCEL ORDER REQUEST | user={} | orderId={}", username, id);
+	// ================= PLACE ORDER =================
 
-        orderService.cancelOrder(id, username);
-        return "redirect:/user/orders";
-    }
+	@PostMapping("/place")
+	public String placeOrder(Principal principal) {
 
-    // ================= REORDER =================
-    @PostMapping("/reorder/{id}")
-    public String reorder(@PathVariable Long id, Principal principal) {
+		String username = principal.getName();
+		log.info("PLACE ORDER REQUEST | user={}", username);
 
-        String username = principal.getName();
-        log.info("REORDER REQUEST | user={} | orderId={}", username, id);
+		orderService.placeOrder(username);
 
-        orderService.reorder(id, username);
-        return "redirect:/user/cart";
-    }
+		// Show success page
+		return "order-success";
+	}
+
+	// ================= CANCEL ORDER =================
+	@PostMapping("/cancel/{id}")
+	public String cancelOrder(@PathVariable Long id, Principal principal) {
+
+		String username = principal.getName();
+		log.info("CANCEL ORDER REQUEST | user={} | orderId={}", username, id);
+
+		orderService.cancelOrder(id, username);
+		return "redirect:/user/orders";
+	}
+
+	// ================= REORDER =================
+	@PostMapping("/reorder/{id}")
+	public String reorder(@PathVariable Long id, Principal principal) {
+
+		String username = principal.getName();
+		log.info("REORDER REQUEST | user={} | orderId={}", username, id);
+
+		orderService.reorder(id, username);
+		return "redirect:/user/cart";
+	}
 }

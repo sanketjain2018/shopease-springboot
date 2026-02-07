@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
       xmlns:sec="https://www.thymeleaf.org/extras/spring-security"
-      th:replace="layout :: layout(~{::section})">
+       th:replace="~{layout :: layout(~{::section})}">
 
 <section>
 
@@ -29,45 +29,48 @@
         </div>
 
         <!-- ================= STATS ================= -->
-        <div class="row g-4 mb-5">
+<div class="row g-4 mb-5">
 
-            <div class="col-md-3">
-                <div class="border rounded p-3 bg-white text-center h-100">
-                    <i class="bi bi-box-seam fs-3 text-primary"></i>
-                    <h6 class="mt-2 mb-1">Products</h6>
-                    <p class="fw-bold fs-5 mb-0">—</p>
-                    <small class="text-muted">Total items</small>
-                </div>
-            </div>
-
-            <div class="col-md-3">
-                <div class="border rounded p-3 bg-white text-center h-100">
-                    <i class="bi bi-people fs-3 text-success"></i>
-                    <h6 class="mt-2 mb-1">Users</h6>
-                    <p class="fw-bold fs-5 mb-0">—</p>
-                    <small class="text-muted">Registered users</small>
-                </div>
-            </div>
-
-            <div class="col-md-3">
-                <div class="border rounded p-3 bg-white text-center h-100">
-                    <i class="bi bi-receipt fs-3 text-warning"></i>
-                    <h6 class="mt-2 mb-1">Orders</h6>
-                    <p class="fw-bold fs-5 mb-0">—</p>
-                    <small class="text-muted">Total orders</small>
-                </div>
-            </div>
-
-            <div class="col-md-3">
-                <div class="border rounded p-3 bg-white text-center h-100">
-                    <i class="bi bi-currency-rupee fs-3 text-danger"></i>
-                    <h6 class="mt-2 mb-1">Revenue</h6>
-                    <p class="fw-bold fs-5 mb-0">—</p>
-                    <small class="text-muted">Total sales</small>
-                </div>
-            </div>
-
+    <div class="col-md-3">
+        <div class="border rounded p-3 bg-white text-center h-100">
+            <i class="bi bi-box-seam fs-3 text-primary"></i>
+            <h6 class="mt-2 mb-1">Products</h6>
+            <p class="fw-bold fs-5 mb-0" th:text="${totalProducts}">0</p>
+            <small class="text-muted">Total items</small>
         </div>
+    </div>
+
+    <div class="col-md-3">
+        <div class="border rounded p-3 bg-white text-center h-100">
+            <i class="bi bi-people fs-3 text-success"></i>
+            <h6 class="mt-2 mb-1">Users</h6>
+            <p class="fw-bold fs-5 mb-0" th:text="${totalUsers}">0</p>
+            <small class="text-muted">Registered users</small>
+        </div>
+    </div>
+
+    <div class="col-md-3">
+        <div class="border rounded p-3 bg-white text-center h-100">
+            <i class="bi bi-receipt fs-3 text-warning"></i>
+            <h6 class="mt-2 mb-1">Orders</h6>
+            <p class="fw-bold fs-5 mb-0" th:text="${totalOrders}">0</p>
+            <small class="text-muted">Total orders</small>
+        </div>
+    </div>
+
+    <div class="col-md-3">
+        <div class="border rounded p-3 bg-white text-center h-100">
+            <i class="bi bi-currency-rupee fs-3 text-danger"></i>
+            <h6 class="mt-2 mb-1">Revenue</h6>
+            <p class="fw-bold fs-5 mb-0">
+                ₹ <span th:text="${totalRevenue}">0</span>
+            </p>
+            <small class="text-muted">Total sales</small>
+        </div>
+    </div>
+
+</div>
+
 
         <!-- ================= MANAGEMENT SECTIONS ================= -->
         <div class="row g-4">
@@ -114,12 +117,15 @@
                         Order Management
                     </h5>
                     <p class="text-muted">
-                        Monitor customer orders and order status.
+                        Monitor customer orders and order status.<br>
+                        
                     </p>
-                    <a th:href="@{/admin/orders}"
-                       class="btn btn-outline-warning btn-sm">
-                        View Orders
-                    </a>
+                    <a href="#"
+   class="btn btn-outline-warning btn-sm"
+   onclick="return false;">
+    View Orders (Coming Soon)
+</a>
+
                 </div>
             </div>
 

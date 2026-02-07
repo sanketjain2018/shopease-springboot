@@ -20,122 +20,116 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class OrderService {
 
-    private static final Logger log =
-            LoggerFactory.getLogger(OrderService.class);
+	private static final Logger log = LoggerFactory.getLogger(OrderService.class);
 
-    private final OrderRepository orderRepository;
-    private final CartService cartService;
+	private final OrderRepository orderRepository;
+	private final CartService cartService;
 
-    // ================= PLACE ORDER =================
-    @Transactional
-    public void placeOrder(String username) {
+	// ================= PLACE ORDER =================
 
-        log.info("PLACE ORDER STARTED | user={}", username);
+	@Transactional
+	public void placeOrder(String username) {
 
-        List<CartItem> cartItems = cartService.getCartItems(username);
-        log.debug("CART ITEMS FETCHED | user={} | count={}",
-                username, cartItems.size());
+		log.info("PLACE ORDER STARTED | user={}", username);
 
-        if (cartItems.isEmpty()) {
-            log.warn("PLACE ORDER FAILED | EMPTY CART | user={}", username);
-            throw new RuntimeException("Cart is empty");
-        }
+		List<CartItem> cartItems = cartService.getCartItems(username);
+		log.debug("CART ITEMS FETCHED | user={} | count={}", username, cartItems.size());
 
-        Order order = new Order();
-        order.setUsername(username);
-        order.setOrderDate(LocalDateTime.now());
-        order.setStatus(OrderStatus.PLACED);
+		if (cartItems.isEmpty()) {
+			log.warn("PLACE ORDER FAILED | EMPTY CART | user={}", username);
+			throw new RuntimeException("Cart is empty");
+		}
 
-        List<OrderItem> orderItems = new ArrayList<>();
-        double totalAmount = 0;
+		Order order = new Order();
+		order.setUsername(username);
+		order.setOrderDate(LocalDateTime.now());
+		order.setStatus(OrderStatus.PLACED);
 
-        for (CartItem cartItem : cartItems) {
+		List<OrderItem> orderItems = new ArrayList<>();
+		double totalAmount = 0;
 
-            OrderItem orderItem = new OrderItem();
-            orderItem.setOrder(order);
-            orderItem.setProduct(cartItem.getProduct());
-            orderItem.setQuantity(cartItem.getQuantity());
-            orderItem.setPrice(cartItem.getProduct().getPrice());
+		for (CartItem cartItem : cartItems) {
 
-            orderItems.add(orderItem);
+			OrderItem orderItem = new OrderItem();
+			orderItem.setOrder(order);
+			orderItem.setProduct(cartItem.getProduct());
+			orderItem.setQuantity(cartItem.getQuantity());
+			orderItem.setPrice(cartItem.getProduct().getPrice());
 
-            double itemTotal =
-                    cartItem.getProduct().getPrice() * cartItem.getQuantity();
-            totalAmount += itemTotal;
+			orderItems.add(orderItem);
 
-            log.debug("ORDER ITEM ADDED | product={} | qty={} | itemTotal={}",
-                    cartItem.getProduct().getName(),
-                    cartItem.getQuantity(),
-                    itemTotal);
-        }
+			double itemTotal = cartItem.getProduct().getPrice() * cartItem.getQuantity();
+			totalAmount += itemTotal;
 
-        order.setItems(orderItems);
-        order.setTotalAmount(totalAmount);
+			log.debug("ORDER ITEM ADDED | product={} | qty={} | itemTotal={}", cartItem.getProduct().getName(),
+					cartItem.getQuantity(), itemTotal);
+		}
 
-        orderRepository.save(order);
-        log.info("ORDER SAVED | user={} | orderId={} | total={}",
-                username, order.getId(), totalAmount);
+		order.setItems(orderItems);
+		order.setTotalAmount(totalAmount);
 
-        // ✅ CLEAR CART ONLY HERE
-        cartService.clearCart(username);
-        log.info("CART CLEARED AFTER ORDER | user={}", username);
-    }
+		orderRepository.save(order);
+		log.info("ORDER SAVED | user={} | orderId={} | total={}", username, order.getId(), totalAmount);
 
-    // ================= CANCEL ORDER =================
-    public void cancelOrder(Long orderId, String username) {
+		// ✅ CLEAR CART ONLY HERE cartService.clearCart(username);
+		log.info("CART CLEARED AFTER ORDER | user={}", username);
+	}
 
-        log.info("CANCEL ORDER REQUEST | user={} | orderId={}", username, orderId);
+	// ================= CANCEL ORDER =================
+	public void cancelOrder(Long orderId, String username) {
 
-        Order order = orderRepository.findById(orderId)
-                .orElseThrow(() -> {
-                    log.warn("ORDER NOT FOUND | orderId={}", orderId);
-                    return new RuntimeException("Order not found");
-                });
+		log.info("CANCEL ORDER REQUEST | user={} | orderId={}", username, orderId);
 
-        if (!order.getUsername().equals(username)) {
-            log.warn("CANCEL DENIED | user={} | owner={} | orderId={}",
-                    username, order.getUsername(), orderId);
-            throw new RuntimeException("You are not allowed to cancel this order");
-        }
+		Order order = orderRepository.findById(orderId).orElseThrow(() -> {
+			log.warn("ORDER NOT FOUND | orderId={}", orderId);
+			return new RuntimeException("Order not found");
+		});
 
-        if (order.getStatus() == OrderStatus.SHIPPED) {
-            log.warn("CANCEL FAILED | ORDER SHIPPED | orderId={}", orderId);
-            throw new RuntimeException("Order already shipped");
-        }
+		if (!order.getUsername().equals(username)) {
+			log.warn("CANCEL DENIED | user={} | owner={} | orderId={}", username, order.getUsername(), orderId);
+			throw new RuntimeException("You are not allowed to cancel this order");
+		}
 
-        order.setStatus(OrderStatus.CANCELLED);
-        orderRepository.save(order);
+		if (order.getStatus() == OrderStatus.SHIPPED) {
+			log.warn("CANCEL FAILED | ORDER SHIPPED | orderId={}", orderId);
+			throw new RuntimeException("Order already shipped");
+		}
 
-        log.info("ORDER CANCELLED | user={} | orderId={}", username, orderId);
-    }
+		order.setStatus(OrderStatus.CANCELLED);
+		orderRepository.save(order);
 
-    // ================= REORDER =================
-    public void reorder(Long orderId, String username) {
+		log.info("ORDER CANCELLED | user={} | orderId={}", username, orderId);
+	}
 
-        log.info("REORDER STARTED | user={} | orderId={}", username, orderId);
+	// ================= REORDER =================
+	public void reorder(Long orderId, String username) {
 
-        Order order = orderRepository.findById(orderId)
-                .orElseThrow(() -> {
-                    log.warn("ORDER NOT FOUND FOR REORDER | orderId={}", orderId);
-                    return new RuntimeException("Order not found");
-                });
+		log.info("REORDER STARTED | user={} | orderId={}", username, orderId);
 
-        if (!order.getUsername().equals(username)) {
-            log.warn("REORDER DENIED | user={} | owner={} | orderId={}",
-                    username, order.getUsername(), orderId);
-            throw new RuntimeException("You are not allowed to reorder this order");
-        }
+		Order order = orderRepository.findById(orderId).orElseThrow(() -> {
+			log.warn("ORDER NOT FOUND FOR REORDER | orderId={}", orderId);
+			return new RuntimeException("Order not found");
+		});
 
-        for (OrderItem item : order.getItems()) {
-            for (int i = 0; i < item.getQuantity(); i++) {
-                cartService.addToCart(username, item.getProduct().getId());
-            }
+		if (!order.getUsername().equals(username)) {
+			log.warn("REORDER DENIED | user={} | owner={} | orderId={}", username, order.getUsername(), orderId);
+			throw new RuntimeException("You are not allowed to reorder this order");
+		}
 
-            log.debug("REORDER ITEM ADDED TO CART | product={} | qty={}",
-                    item.getProduct().getName(),
-                    item.getQuantity());
-        }
+		for (OrderItem item : order.getItems()) {
+			for (int i = 0; i < item.getQuantity(); i++) {
+				cartService.addToCart(username, item.getProduct().getId());
+			}
 
-        log.info("REORDER COMPLETED | user={} | orderId={}", username, orderId);
-    }
+			log.debug("REORDER ITEM ADDED TO CART | product={} | qty={}", item.getProduct().getName(),
+					item.getQuantity());
+		}
+
+		log.info("REORDER COMPLETED | user={} | orderId={}", username, orderId);
+	}
+
+	// ================= COUNT ORDERS =================
+	public long countOrdersByUsername(String username) {
+		return orderRepository.countByUsername(username);
+	}
 }

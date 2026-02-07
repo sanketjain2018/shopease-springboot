@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
-      th:replace="layout :: layout(~{::section})">
+       th:replace="~{layout :: layout(~{::section})}">
 
 <section>
 
@@ -26,7 +26,7 @@
 
                     <form th:action="@{/products-ui/save}"
                           method="post"
-                          enctype="multipart/form-data">
+                          enctype="multipart/form-data" autocomplete="off">
 
                         <!-- PRODUCT NAME -->
                         <div class="mb-3">

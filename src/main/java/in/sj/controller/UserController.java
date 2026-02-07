@@ -7,51 +7,36 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import in.sj.entity.User;
 import in.sj.service.CartService;
-import in.sj.service.UserService;
+import in.sj.service.OrderService;
+import lombok.RequiredArgsConstructor;
 
 @Controller
 @RequestMapping("/user")
+@RequiredArgsConstructor
 public class UserController {
 
-    private static final Logger log =
-            LoggerFactory.getLogger(UserController.class);
+    private final OrderService orderService;
+    private final CartService cartService;
 
-    private final UserService userService;
-  //  private final CartService cartService;
+    @SuppressWarnings("unused")
+    private static final Logger log = LoggerFactory.getLogger(UserController.class);
 
-    public UserController(UserService userService, CartService cartService) {
-        this.userService = userService;
-       // this.cartService = cartService;
-    }
-
- // ================= USER DASHBOARD =================
+    // ================= USER DASHBOARD =================
     @GetMapping("/dashboard")
     public String dashboard(Model model, Principal principal) {
 
-        model.addAttribute("username", principal.getName());
-        return "user-dashboard";
-    }
-
-
-	
-
-    // ================= UPDATE PROFILE =================
-    @PostMapping("/profile/update")
-    public String updateProfile(User user, Principal principal) {
-
         String username = principal.getName();
-        log.info("USER PROFILE UPDATE REQUEST | loggedInUser={} | targetUser={}",
-                username, user.getUsername());
 
-        userService.updateUser(user);
+        long totalOrders = orderService.countOrdersByUsername(username);
+        long cartItems = cartService.countCartItemsByUsername(username);
 
-        log.info("USER PROFILE UPDATED SUCCESSFULLY | user={}", user.getUsername());
+        model.addAttribute("username", username);
+        model.addAttribute("totalOrders", totalOrders);
+        model.addAttribute("cartItems", cartItems);
 
-        return "redirect:/user/dashboard";
+        return "user-dashboard";
     }
 }

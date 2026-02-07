@@ -3,7 +3,7 @@
 
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
-      th:replace="layout :: layout(~{::section})">
+       th:replace="~{layout :: layout(~{::section})}">
 
 <section>
 
@@ -19,7 +19,7 @@
     <div class="container my-4">
         <div class="row">
             <div class="col-md-4 ms-auto">
-                <form method="get" th:action="@{/shop}">
+                <form method="get" th:action="@{/shop}" autocomplete="off">
                     <select name="sortBy" class="form-select"
                             onchange="this.form.submit()">
                         <option value="id" th:selected="${sortBy=='id'}">Newest</option>

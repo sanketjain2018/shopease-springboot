@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
-      th:replace="layout :: layout(~{::section})">
+      th:replace="~{layout :: layout(~{::section})}"
+>
 
 <section>
 
@@ -8,7 +9,8 @@
 
         <div class="row justify-content-center">
 
-            <div class="col-md-4">
+            <!-- Better responsive width -->
+            <div class="col-12 col-sm-10 col-md-6 col-lg-4">
 
                 <div class="card shadow-sm border-0">
 
@@ -34,8 +36,14 @@
                             You have been logged out successfully
                         </div>
 
+                        <!-- RESET SUCCESS -->
+                        <div th:if="${param.resetSuccess}"
+                             class="alert alert-success text-center">
+                            Password reset successful. Please login.
+                        </div>
+
                         <!-- FORM -->
-                        <form th:action="@{/login}" method="post">
+                        <form th:action="@{/login}" method="post" autocomplete="off">
 
                             <div class="mb-3">
                                 <label class="form-label fw-semibold">
@@ -62,6 +70,11 @@
                             </button>
 
                         </form>
+
+                        <!-- Forgot password link -->
+                        <div class="text-center mt-2">
+                            <a th:href="@{/forgot-password}">Forgot Password?</a>
+                        </div>
 
                         <div class="text-center mt-3">
                             <span class="text-muted">

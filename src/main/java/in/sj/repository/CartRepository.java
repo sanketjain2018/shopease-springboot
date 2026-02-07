@@ -15,4 +15,6 @@ public interface CartRepository extends JpaRepository<CartItem, Long> {
 
 	// Find specific product in user's cart
 	Optional<CartItem> findByUsernameAndProductId(String username, Long productId);
+
+	long countByUsername(String username);
 }

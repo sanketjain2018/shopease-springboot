@@ -1,5 +1,7 @@
 package in.sj.service;
 
+import org.springframework.web.multipart.MultipartFile;
+
 import in.sj.entity.User;
 
 public interface UserService {
@@ -15,5 +17,5 @@ public interface UserService {
     // ================= PROFILE =================
     User getUserForProfile(String username);
 
-    void updateProfile(String username, User updatedUser);
+    void updateProfile(String username, User updatedUser, MultipartFile image);
 }
