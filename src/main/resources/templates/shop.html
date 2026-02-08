@@ -37,15 +37,59 @@
     <!-- ================= PRODUCTS GRID ================= -->
     <div class="container my-5">
         <div class="row g-4">
+        
+        
+        <div class="col-xl-2 col-lg-3 col-md-3 col-sm-6"
+     th:each="product : ${products.content}">
+    <div class="product-card h-100 d-flex flex-column shadow-sm position-relative">
 
-            <div class="col-xl-2 col-lg-3 col-md-3 col-sm-6"
+        <!-- OUT OF STOCK BADGE -->
+        <div class="out-of-stock-badge"
+             th:if="${product.stock == 0}">
+            Out of Stock
+        </div>
+
+        <!-- IMAGE BOX -->
+        <div class="product-img-box">
+            <img th:src="${product.imageUrl != null ? product.imageUrl : '/images/placeholder.png'}"
+                 alt="Product Image"
+                 class="product-img">
+        </div>
+
+        <!-- CONTENT -->
+        <div class="p-3 text-center d-flex flex-column flex-grow-1">
+            <h6 class="fw-semibold"
+                th:text="${product.name}">
+                Product Name
+            </h6>
+
+            <p class="price mb-2">
+                ₹ <span th:text="${product.price}">999</span>
+            </p>
+
+            <!-- BUTTON AREA -->
+            <div class="mt-auto">
+                <form th:action="@{/user/cart/add/{id}(id=${product.id})}"
+                      method="post">
+                    <button class="btn btn-success btn-sm w-100"
+                            th:disabled="${product.stock == 0}">
+                        Add to Cart
+                    </button>
+                </form>
+            </div>
+        </div>
+
+    </div>
+</div>
+        
+        
+        
+
+           <!--  <div class="col-xl-2 col-lg-3 col-md-3 col-sm-6"
                  th:each="product : ${products.content}">
                 <div class="product-card h-100">
 
-                   <!--  <div class="product-img-box">
-                        <img th:src="@{'/uploads/products/' + ${product.imageUrl}}"
-                             alt="Product Image">
-                    </div> -->   <!-- CHANGE FOR CLOUDNARY --> 
+                   
                     
                     <img th:src="${product.imageUrl}" class="img-fluid">
                     
@@ -71,7 +115,7 @@
                 </div>
             </div>
 
-            <!-- ================= NO PRODUCTS ================= -->
+            ================= NO PRODUCTS =================
             <div class="col-12"
                  th:if="${products.totalElements == 0}">
                 <p class="text-center text-muted">
@@ -80,7 +124,7 @@
             </div>
 
         </div>
-    </div>
+    </div> -->
 
     <!-- ================= PAGINATION ================= -->
     <nav class="mt-4"

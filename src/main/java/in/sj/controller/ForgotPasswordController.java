@@ -3,29 +3,29 @@ package in.sj.controller;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
-import jakarta.servlet.http.HttpServletRequest;
-import org.springframework.transaction.annotation.Transactional;
-
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import in.sj.entity.PasswordResetToken;
 import in.sj.entity.User;
 import in.sj.repository.PasswordResetTokenRepository;
 import in.sj.repository.UserRepository;
-import in.sj.service.EmailService;
+import in.sj.service.MailSenderService;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 
 @Controller
 @RequiredArgsConstructor
-
 public class ForgotPasswordController {
 
     private final UserRepository userRepository;
     private final PasswordResetTokenRepository tokenRepository;
-    private final EmailService emailService;
+    private final MailSenderService mailSenderService;   //  use interface (dev/prod)
     private final PasswordEncoder passwordEncoder;
 
     // 1) Show "Forgot Password" page
@@ -61,18 +61,18 @@ public class ForgotPasswordController {
 
         tokenRepository.save(resetToken);
 
-        // ✅ Build base URL dynamically (works for Local + Render)
+        // Build base URL dynamically (works for Local + Render)
         String baseUrl = request.getScheme() + "://" + request.getServerName();
-
-        // Add port only if not standard (80/443)
         if (request.getServerPort() != 80 && request.getServerPort() != 443) {
             baseUrl += ":" + request.getServerPort();
         }
 
         String resetLink = baseUrl + "/reset-password?token=" + token;
 
-        // Send email
-        emailService.sendResetLink(user.getEmail(), resetLink);
+        //  Send email via profile-based service
+        // dev  -> Gmail SMTP
+        // prod -> Brevo API
+        mailSenderService.sendResetPasswordMail(user.getEmail(), resetLink);
 
         model.addAttribute("message", "Password reset link sent to your email");
         return "forgot-password";
