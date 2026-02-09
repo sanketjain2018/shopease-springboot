@@ -14,6 +14,9 @@ import in.sj.entity.User;
 import in.sj.service.UserService;
 import lombok.RequiredArgsConstructor;
 
+// UserProfileController
+
+
 @Controller
 @RequestMapping("/user")
 @RequiredArgsConstructor

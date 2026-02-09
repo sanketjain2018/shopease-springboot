@@ -184,4 +184,17 @@ public class ProductController {
         return "shop";
     }
     
+ // ================= PRODUCT DETAILS PAGE =================
+    @GetMapping("/product/{id}")
+    public String productDetails(@PathVariable Long id, Model model) {
+
+        log.info("PRODUCT DETAILS PAGE | productId={}", id);
+
+        Product product = productService.getProductById(id);
+        model.addAttribute("product", product);
+
+        return "product-details"; // Thymeleaf page name
+    }
+
+    
 }

@@ -4,6 +4,8 @@ import org.springframework.web.multipart.MultipartFile;
 
 import in.sj.entity.User;
 
+// UserService
+
 public interface UserService {
 	// ================= REGISTER =================
     void register(User user);

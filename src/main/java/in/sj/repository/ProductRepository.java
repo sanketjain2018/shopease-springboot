@@ -2,6 +2,8 @@ package in.sj.repository;
 
 
 
+import java.util.List;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -18,5 +20,14 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
 			""")
 	Page<Product> search(@Param("keyword") String keyword, Pageable pageable);
 	
-	//List<Product> findByNameContainingIgnoreCase(String keyword);
+	// HOME PAGE CAROUSEL QUERIES
+	
+	 // Featured products (limit 12, latest first)
+    List<Product> findTop12ByFeaturedTrueOrderByIdDesc();
+
+    // New arrivals (latest by createdAt)
+    List<Product> findTop12ByOrderByCreatedAtDesc();
+
+    // Top selling products (highest soldCount first)
+    List<Product> findTop12ByOrderBySoldCountDesc();
 }

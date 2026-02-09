@@ -1,22 +1,32 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
-      xmlns:sec="https://www.thymeleaf.org/extras/spring-security">
-
-<body  th:replace="~{layout :: layout(~{::section})}">
+      xmlns:sec="https://www.thymeleaf.org/extras/spring-security"
+      th:replace="~{layout :: layout(~{::section})}">
 
 <section>
 
 <style>
     .order-box {
         background: #fff;
-        border-radius: 12px;
+        border-radius: 14px;
         padding: 16px;
         box-shadow: 0 8px 20px rgba(0,0,0,0.08);
     }
     .status-badge {
-        font-size: 0.85rem;
+        font-size: 0.8rem;
         padding: 6px 12px;
         border-radius: 20px;
+        font-weight: 600;
+    }
+    .product-img {
+        width: 56px;
+        height: 56px;
+        object-fit: contain;
+    }
+    @media (max-width: 767px) {
+        .text-end-sm {
+            text-align: left !important;
+        }
     }
 </style>
 
@@ -25,12 +35,12 @@
     <div class="order-box">
 
         <!-- HEADER -->
-        <div class="d-flex justify-content-between align-items-center mb-3">
-            <h5 class="fw-bold">
+        <div class="d-flex flex-wrap justify-content-between align-items-center mb-2 gap-2">
+            <h5 class="fw-bold mb-0">
                 🧾 Order #<span th:text="${order.id}"></span>
             </h5>
 
-            <!-- STATUS BADGES (NULL SAFE) -->
+            <!-- STATUS BADGE (NULL SAFE) -->
             <span th:if="${order.status == null}"
                   class="status-badge bg-secondary text-white">
                 UNKNOWN
@@ -55,7 +65,6 @@
                   class="status-badge bg-danger text-white">
                 CANCELLED
             </span>
-
         </div>
 
         <!-- DATE -->
@@ -66,7 +75,7 @@
 
         <!-- ITEMS -->
         <div class="table-responsive">
-            <table class="table table-sm align-middle">
+            <table class="table table-sm align-middle mb-0">
                 <thead class="table-light">
                 <tr>
                     <th>Product</th>
@@ -76,27 +85,49 @@
                 </tr>
                 </thead>
                 <tbody>
+
                 <tr th:each="item : ${order.items}">
-                    <td th:text="${item.product.name}"></td>
-                    <td class="text-center">₹<span th:text="${item.price}"></span></td>
+                    <!-- PRODUCT -->
+                    <td>
+                        <div class="d-flex align-items-center gap-2">
+                            <img class="product-img"
+                                 th:src="${item.product.imageUrl != null ? item.product.imageUrl : '/images/placeholder.png'}"
+                                 alt="Product">
+                            <span th:text="${item.product.name}">Product</span>
+                        </div>
+                    </td>
+
+                    <!-- PRICE -->
+                    <td class="text-center">
+                        ₹<span th:text="${item.price}"></span>
+                    </td>
+
+                    <!-- QTY -->
                     <td class="text-center" th:text="${item.quantity}"></td>
-                    <td class="text-end">
+
+                    <!-- LINE TOTAL -->
+                    <td class="text-end fw-semibold">
                         ₹<span th:text="${item.price * item.quantity}"></span>
                     </td>
                 </tr>
+
                 </tbody>
             </table>
         </div>
 
-        <!-- TOTAL -->
-        <div class="text-end mt-3 fw-bold text-success">
-            Grand Total: ₹<span th:text="${order.totalAmount}"></span>
+        <!-- TOTAL SUMMARY -->
+        <div class="d-flex justify-content-end mt-3">
+            <div class="bg-light rounded p-3 text-end">
+                <div class="fw-bold text-success fs-5">
+                    Grand Total: ₹<span th:text="${order.totalAmount}"></span>
+                </div>
+            </div>
         </div>
 
     </div>
 
     <!-- ACTIONS -->
-    <div class="d-flex justify-content-between mt-3">
+    <div class="d-flex justify-content-between align-items-center mt-3 flex-wrap gap-2">
 
         <form th:if="${order.status != null and order.status.toString() != 'CANCELLED'}"
               th:action="@{/user/orders/reorder/{id}(id=${order.id})}"
@@ -106,8 +137,8 @@
             </button>
         </form>
 
-        <a th:href="@{/user/orders}" class="btn btn-secondary btn-sm">
-            ← Back
+        <a th:href="@{/user/orders}" class="btn btn-outline-secondary btn-sm">
+            ← Back to My Orders
         </a>
 
     </div>
@@ -115,5 +146,4 @@
 </div>
 
 </section>
-</body>
 </html>

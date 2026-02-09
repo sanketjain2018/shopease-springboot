@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
       xmlns:sec="https://www.thymeleaf.org/extras/spring-security"
-       th:replace="~{layout :: layout(~{::section})}">
+      th:replace="~{layout :: layout(~{::section})}">
 
 <section>
 
@@ -18,7 +18,17 @@
     <!-- ================= CONTENT ================= -->
     <div class="container my-5">
 
-        <!-- WELCOME -->
+        <!-- ================= EXPORT BUTTONS ================= -->
+        <div class="mb-4 d-flex gap-2">
+            <a th:href="@{/admin/report/excel}" class="btn btn-success btn-sm">
+                📥 Export Excel
+            </a>
+            <a th:href="@{/admin/report/pdf}" class="btn btn-danger btn-sm">
+                📄 Export PDF
+            </a>
+        </div>
+
+        <!-- ================= WELCOME ================= -->
         <div class="mb-4">
             <h4 class="fw-bold">
                 Welcome, <span sec:authentication="name"></span>
@@ -29,48 +39,55 @@
         </div>
 
         <!-- ================= STATS ================= -->
-<div class="row g-4 mb-5">
+        <div class="row g-4 mb-5">
 
-    <div class="col-md-3">
-        <div class="border rounded p-3 bg-white text-center h-100">
-            <i class="bi bi-box-seam fs-3 text-primary"></i>
-            <h6 class="mt-2 mb-1">Products</h6>
-            <p class="fw-bold fs-5 mb-0" th:text="${totalProducts}">0</p>
-            <small class="text-muted">Total items</small>
+            <div class="col-md-3">
+                <div class="border rounded p-3 bg-white text-center h-100">
+                    <i class="bi bi-box-seam fs-3 text-primary"></i>
+                    <h6 class="mt-2 mb-1">Products</h6>
+                    <p class="fw-bold fs-5 mb-0" th:text="${totalProducts}">0</p>
+                    <small class="text-muted">Total items</small>
+                </div>
+            </div>
+
+            <div class="col-md-3">
+                <div class="border rounded p-3 bg-white text-center h-100">
+                    <i class="bi bi-people fs-3 text-success"></i>
+                    <h6 class="mt-2 mb-1">Users</h6>
+                    <p class="fw-bold fs-5 mb-0" th:text="${totalUsers}">0</p>
+                    <small class="text-muted">Registered users</small>
+                </div>
+            </div>
+
+            <div class="col-md-3">
+                <div class="border rounded p-3 bg-white text-center h-100">
+                    <i class="bi bi-receipt fs-3 text-warning"></i>
+                    <h6 class="mt-2 mb-1">Orders</h6>
+                    <p class="fw-bold fs-5 mb-0" th:text="${totalOrders}">0</p>
+                    <small class="text-muted">Total orders</small>
+                </div>
+            </div>
+
+            <div class="col-md-3">
+                <div class="border rounded p-3 bg-white text-center h-100">
+                    <i class="bi bi-currency-rupee fs-3 text-danger"></i>
+                    <h6 class="mt-2 mb-1">Revenue</h6>
+                    <p class="fw-bold fs-5 mb-0">
+                        ₹ <span th:text="${totalRevenue}">0</span>
+                    </p>
+                    <small class="text-muted">Total sales</small>
+                </div>
+            </div>
+
         </div>
-    </div>
 
-    <div class="col-md-3">
-        <div class="border rounded p-3 bg-white text-center h-100">
-            <i class="bi bi-people fs-3 text-success"></i>
-            <h6 class="mt-2 mb-1">Users</h6>
-            <p class="fw-bold fs-5 mb-0" th:text="${totalUsers}">0</p>
-            <small class="text-muted">Registered users</small>
+        <!-- ================= SALES CHART ================= -->
+        <div class="card shadow-sm mb-5">
+            <div class="card-body">
+                <h5 class="fw-bold mb-3">📊 Sales Per Month</h5>
+                <canvas id="salesChart" height="70"></canvas>
+            </div>
         </div>
-    </div>
-
-    <div class="col-md-3">
-        <div class="border rounded p-3 bg-white text-center h-100">
-            <i class="bi bi-receipt fs-3 text-warning"></i>
-            <h6 class="mt-2 mb-1">Orders</h6>
-            <p class="fw-bold fs-5 mb-0" th:text="${totalOrders}">0</p>
-            <small class="text-muted">Total orders</small>
-        </div>
-    </div>
-
-    <div class="col-md-3">
-        <div class="border rounded p-3 bg-white text-center h-100">
-            <i class="bi bi-currency-rupee fs-3 text-danger"></i>
-            <h6 class="mt-2 mb-1">Revenue</h6>
-            <p class="fw-bold fs-5 mb-0">
-                ₹ <span th:text="${totalRevenue}">0</span>
-            </p>
-            <small class="text-muted">Total sales</small>
-        </div>
-    </div>
-
-</div>
-
 
         <!-- ================= MANAGEMENT SECTIONS ================= -->
         <div class="row g-4">
@@ -117,21 +134,42 @@
                         Order Management
                     </h5>
                     <p class="text-muted">
-                        Monitor customer orders and order status.<br>
-                        
+                        Monitor customer orders and order status.
                     </p>
-                    <a href="#"
-   class="btn btn-outline-warning btn-sm"
-   onclick="return false;">
-    View Orders (Coming Soon)
-</a>
-
+                    <a href="#" class="btn btn-outline-warning btn-sm" onclick="return false;">
+                        View Orders (Coming Soon)
+                    </a>
                 </div>
             </div>
 
         </div>
 
     </div>
+
+    <!-- ================= CHART JS ================= -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+  <script th:inline="javascript">
+/*<![CDATA[*/
+const labels = /*[[${months}]]*/ [];
+const dataValues = /*[[${monthlySales}]]*/ [];
+
+const ctx = document.getElementById('salesChart').getContext('2d');
+
+new Chart(ctx, {
+    type: 'bar',
+    data: {
+        labels: labels,
+        datasets: [{
+            label: 'Sales (₹)',
+            data: dataValues
+        }]
+    }
+});
+/*]]>*/
+</script>
+
+
 
 </section>
 </html>

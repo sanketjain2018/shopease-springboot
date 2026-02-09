@@ -19,23 +19,26 @@ public class SecurityConfig {
 		.authorizeHttpRequests(auth -> auth
 
 			    // PUBLIC
-			    .requestMatchers("/", "/login", "/register","/forgot-password", "/reset-password", "/css/**", "/js/**", "/uploads/**").permitAll()
+			    .requestMatchers("/", "/login", "/register", "/forgot-password", "/reset-password",
+			                     "/css/**", "/js/**", "/uploads/**").permitAll()
 
-			    // SHOP (NORMAL USER)
+			    // SHOP (NORMAL USER + ADMIN)
 			    .requestMatchers("/shop").hasAnyRole("USER", "ADMIN")
 
-			    // USER PAGES (ORDERS, CART, ETC)
-			    .requestMatchers("/user/**").hasRole("USER")
+			    // USER PAGES (ORDERS, CART, ETC) -> ALLOW BOTH
+			    .requestMatchers("/user/**").hasAnyRole("USER", "ADMIN")
 
 			    // ADMIN PRODUCT MANAGEMENT
-			    .requestMatchers("/admin/**", "/products-ui/add", "/products-ui/save", "/products-ui/edit/**",
-			            "/products-ui/update", "/products-ui/delete/**")
+			    .requestMatchers("/admin/**", "/products-ui/add", "/products-ui/save",
+			                     "/products-ui/edit/**", "/products-ui/update", "/products-ui/delete/**")
 			    .hasRole("ADMIN")
 
 			    // PRODUCT LIST (TABLE VIEW)
-			    .requestMatchers("/products-ui").hasAnyRole("ADMIN")
+			    .requestMatchers("/products-ui").hasRole("ADMIN")
 
-			    .anyRequest().authenticated())
+			    .anyRequest().authenticated()
+			)
+
 
 
 				.formLogin(form -> form.loginPage("/login").successHandler((request, response, authentication) -> {

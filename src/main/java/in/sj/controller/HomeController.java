@@ -23,6 +23,7 @@ public class HomeController {
 
         log.info("HOME PAGE REQUESTED");
 
+        // ================= STATS =================
         long productCount = productService.getProductCount();
         log.debug("TOTAL PRODUCTS COUNT = {}", productCount);
 
@@ -30,6 +31,11 @@ public class HomeController {
         model.addAttribute("customerCount", 10542); // temp static
         model.addAttribute("uptime", "99.9%");
         model.addAttribute("support", "24/7");
+
+        // ================= HOME PAGE CAROUSELS =================
+        model.addAttribute("featuredProducts", productService.getFeaturedProducts());
+        model.addAttribute("newArrivals", productService.getNewArrivals());
+        model.addAttribute("topSelling", productService.getTopSelling());
 
         log.info("HOME PAGE DATA LOADED SUCCESSFULLY");
 

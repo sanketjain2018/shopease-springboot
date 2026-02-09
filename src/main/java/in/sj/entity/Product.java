@@ -1,6 +1,13 @@
 package in.sj.entity;
 
-import jakarta.persistence.*;
+import java.time.LocalDateTime;
+
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 import lombok.Data;
 
 @Data
@@ -24,5 +31,18 @@ public class Product {
 
 	@Column(name = "image_url", nullable = true, length = 500)
 	private String imageUrl;
+	
+	// for home pages featured  
+	
+	@Column(nullable = false)
+	private Boolean featured = false;
+
+	// For "New Arrivals"
+	@Column(nullable = false)
+	private LocalDateTime createdAt = LocalDateTime.now();
+
+	// For "Top Selling"
+	@Column(nullable = false)
+	private Long soldCount = 0L;
 
 }

@@ -1,11 +1,14 @@
 package in.sj.service;
 
-import org.springframework.stereotype.Service;
-import lombok.RequiredArgsConstructor;
+import java.util.List;
 
+import org.springframework.stereotype.Service;
+
+import in.sj.entity.Order;
+import in.sj.repository.OrderRepository;
 import in.sj.repository.ProductRepository;
 import in.sj.repository.UserRepository;
-import in.sj.repository.OrderRepository;
+import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor
@@ -29,5 +32,15 @@ public class AdminDashboardService {
 
     public Double getTotalRevenue() {
         return orderRepository.getTotalRevenue();
+    }
+    
+    public List<Object[]> getMonthlySales() {
+        return orderRepository.findMonthlySales();
+    }
+
+    // ================= REPORT DATA =================
+
+    public List<Order> getAllOrders() {
+        return orderRepository.findAll();
     }
 }

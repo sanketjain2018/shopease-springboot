@@ -1,15 +1,48 @@
-<div th:fragment="footer" class="footer mt-5 pt-5">
-    <div class="container-fluid">
-        <div class="row">
+<div th:fragment="footer" class="footer mt-5 pt-5 bg-dark text-light">
+    <div class="container">
 
-            <div class="col-lg-3 col-md-6 mb-4">
-                <h1>ShopEase</h1>
-                <p>Shop smart. Live easy.</p>
+        <div class="row gy-4">
+
+            <!-- BRAND -->
+            <div class="col-lg-3 col-md-6">
+                <h3 class="fw-bold">ShopEase</h3>
+                <p class="text-muted">
+                    Shop smart. Live easy.
+                </p>
+
+                <!-- Social Icons -->
+                <div class="d-flex gap-3 fs-4">
+                    <a href="https://www.linkedin.com/in/sanketjavafs/"
+                       target="_blank"
+                       class="text-light text-decoration-none"
+                       title="LinkedIn">
+                        <i class="bi bi-linkedin"></i>
+                    </a>
+                    <a href="https://www.instagram.com/_s_a_n_k_e_t_x/"
+                       target="_blank"
+                       class="text-light text-decoration-none"
+                       title="Instagram">
+                        <i class="bi bi-instagram"></i>
+                    </a>
+                    <a href="https://github.com/sanketjain2018"
+                       target="_blank"
+                       class="text-light text-decoration-none"
+                       title="GitHub">
+                        <i class="bi bi-github"></i>
+                    </a>
+                    <a href="https://shopease-springboot-1.onrender.com"
+                       target="_blank"
+                       class="text-light text-decoration-none"
+                       title="Website">
+                        <i class="bi bi-globe"></i>
+                    </a>
+                </div>
             </div>
 
-            <div class="col-lg-3 col-md-6 mb-4">
-                <h3>Useful Pages</h3>
-                <ul class="list-unstyled">
+            <!-- USEFUL PAGES -->
+            <div class="col-lg-3 col-md-6">
+                <h5 class="fw-semibold mb-3">Useful Pages</h5>
+                <ul class="list-unstyled footer-links">
                     <li><a th:href="@{/shop}">Products</a></li>
                     <li><a th:href="@{/user/cart}">Cart</a></li>
                     <li><a th:href="@{/checkout}">Checkout</a></li>
@@ -17,22 +50,39 @@
                 </ul>
             </div>
 
-            <div class="col-lg-3 col-md-6 mb-4">
-                <h3>Quick Links</h3>
-                <ul class="list-unstyled">
+            <!-- QUICK LINKS -->
+            <div class="col-lg-3 col-md-6">
+                <h5 class="fw-semibold mb-3">Quick Links</h5>
+                <ul class="list-unstyled footer-links">
                     <li><a th:href="@{/shop}">Home</a></li>
                     <li><a th:href="@{/user/orders}">My Orders</a></li>
                     <li><a th:href="@{/user/cart}">Cart</a></li>
+                    <li><a th:href="@{/contact}">Contact</a></li>
                 </ul>
             </div>
 
-            <div class="col-lg-3 col-md-6 mb-4">
-                <h3>Get in Touch</h3>
-                <p><i class="bi bi-geo-alt"></i> Jalgaon, Maharashtra</p>
-                <p><i class="bi bi-envelope"></i> sanketjfs@gmail.com</p>
-                <p><i class="bi bi-telephone"></i> +91 86575 51767</p>
+            <!-- CONTACT -->
+            <div class="col-lg-3 col-md-6">
+                <h5 class="fw-semibold mb-3">Get in Touch</h5>
+                <p class="mb-2">
+                    <i class="bi bi-geo-alt me-2"></i> Jalgaon, Maharashtra
+                </p>
+                <p class="mb-2">
+                    <i class="bi bi-envelope me-2"></i> sanketjfs@gmail.com
+                </p>
+                <p class="mb-2">
+                    <i class="bi bi-telephone me-2"></i> +91 86575 51767
+                </p>
             </div>
 
         </div>
+
+        <hr class="border-secondary my-4">
+
+        <!-- BOTTOM BAR -->
+        <div class="text-center  small pb-3 text-light bg-dark">
+            © 2026 ShopEase. All rights reserved. | Built with ❤️ by Sanket
+        </div>
+
     </div>
 </div>

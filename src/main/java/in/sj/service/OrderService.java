@@ -132,4 +132,32 @@ public class OrderService {
 	public long countOrdersByUsername(String username) {
 		return orderRepository.countByUsername(username);
 	}
+
+	// 💰 Total spent by user
+	public double getTotalSpentByUsername(String username) {
+		Double total = orderRepository.getTotalSpentByUsername(username);
+		return total != null ? total : 0.0;
+	}
+
+	// 🕒 Last (most recent) order
+	public Order getLastOrderByUsername(String username) {
+		return orderRepository.findTopByUsernameOrderByOrderDateDesc(username).orElse(null);
+	}
+
+	// 📃 Recent orders (latest 5)
+	public List<Order> getRecentOrdersByUsername(String username, int limit) {
+		return orderRepository.findRecentOrders(username, org.springframework.data.domain.PageRequest.of(0, limit));
+	}
+	
+	// get monthly sale
+	public List<Object[]> getMonthlySales() {
+	    return orderRepository.findMonthlySales();
+	}
+
+	
+	public List<Order> findAll() {
+	    return orderRepository.findAll();
+	}
+
+
 }

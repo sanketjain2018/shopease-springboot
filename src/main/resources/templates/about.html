@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
-       th:replace="~{layout :: layout(~{::section})}">
+      th:replace="~{layout :: layout(~{::section})}">
 
 <section>
 
-    <!-- ================= PAGE HEADER ================= -->
+    <!-- ================= HERO ================= -->
     <div class="page-header text-center">
         <div class="container">
             <h1 class="fw-bold">About ShopEase</h1>
@@ -14,26 +14,83 @@
         </div>
     </div>
 
-    <!-- ================= INTRO ================= -->
+    <style>
+        .about-card {
+            background: #fff;
+            border-radius: 14px;
+            padding: 20px;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.06);
+            height: 100%;
+        }
+        .stat-box {
+            background: #f8f9fa;
+            border-radius: 12px;
+            padding: 16px;
+            text-align: center;
+        }
+        .stat-number {
+            font-size: 1.6rem;
+            font-weight: 700;
+        }
+    </style>
+
     <div class="container my-5">
 
+        <!-- ================= INTRO ================= -->
         <div class="row justify-content-center mb-5">
             <div class="col-md-10 text-center">
                 <h3 class="fw-bold mb-3">Who We Are</h3>
                 <p class="text-muted fs-5">
                     ShopEase is a full-stack e-commerce application designed
                     to demonstrate real-world backend architecture, secure
-                    authentication, and clean user experience using
+                    authentication, and a clean user experience using
                     Spring Boot and Thymeleaf.
                 </p>
             </div>
+        </div>
+
+        <!-- ================= STATS (DYNAMIC) ================= -->
+        <div class="row g-3 mb-5 text-center">
+
+            <div class="col-6 col-md-3">
+                <div class="stat-box">
+                    <i class="bi bi-box-seam fs-3 text-primary"></i>
+                    <div class="stat-number" th:text="${productCount != null ? productCount : 0}">0</div>
+                    <div class="text-muted">Products</div>
+                </div>
+            </div>
+
+            <div class="col-6 col-md-3">
+                <div class="stat-box">
+                    <i class="bi bi-people fs-3 text-success"></i>
+                    <div class="stat-number" th:text="${userCount != null ? userCount : 0}">0</div>
+                    <div class="text-muted">Users</div>
+                </div>
+            </div>
+
+            <div class="col-6 col-md-3">
+                <div class="stat-box">
+                    <i class="bi bi-receipt fs-3 text-warning"></i>
+                    <div class="stat-number" th:text="${orderCount != null ? orderCount : 0}">0</div>
+                    <div class="text-muted">Orders</div>
+                </div>
+            </div>
+
+            <div class="col-6 col-md-3">
+                <div class="stat-box">
+                    <i class="bi bi-cpu fs-3 text-info"></i>
+                    <div class="stat-number" th:text="${appVersion != null ? appVersion : '1.0'}">1.0</div>
+                    <div class="text-muted">Version</div>
+                </div>
+            </div>
+
         </div>
 
         <!-- ================= WHY SHOPEASE ================= -->
         <div class="row g-4 mb-5">
 
             <div class="col-md-4">
-                <div class="border rounded p-4 h-100">
+                <div class="about-card">
                     <h5 class="fw-bold mb-2">🛒 Real E-Commerce Flow</h5>
                     <p class="text-muted mb-0">
                         Complete shopping flow including product listing,
@@ -44,7 +101,7 @@
             </div>
 
             <div class="col-md-4">
-                <div class="border rounded p-4 h-100">
+                <div class="about-card">
                     <h5 class="fw-bold mb-2">🔐 Secure by Design</h5>
                     <p class="text-muted mb-0">
                         Built with Spring Security featuring authentication,
@@ -55,7 +112,7 @@
             </div>
 
             <div class="col-md-4">
-                <div class="border rounded p-4 h-100">
+                <div class="about-card">
                     <h5 class="fw-bold mb-2">⚙️ Scalable Architecture</h5>
                     <p class="text-muted mb-0">
                         Layered architecture with Controller, Service,
@@ -69,12 +126,12 @@
         <!-- ================= TECH STACK ================= -->
         <div class="row mb-5">
             <div class="col-md-12">
-                <h3 class="fw-bold mb-3 text-center">Technology Stack</h3>
+                <h3 class="fw-bold mb-4 text-center">Technology Stack</h3>
 
                 <div class="row g-3 justify-content-center">
 
                     <div class="col-md-3 col-sm-6">
-                        <div class="border rounded p-3 text-center">
+                        <div class="about-card text-center">
                             <strong>Backend</strong>
                             <p class="text-muted mb-0 mt-1">
                                 Spring Boot, Spring MVC, Spring Data JPA
@@ -83,7 +140,7 @@
                     </div>
 
                     <div class="col-md-3 col-sm-6">
-                        <div class="border rounded p-3 text-center">
+                        <div class="about-card text-center">
                             <strong>Security</strong>
                             <p class="text-muted mb-0 mt-1">
                                 Spring Security, Role-based Access
@@ -92,7 +149,7 @@
                     </div>
 
                     <div class="col-md-3 col-sm-6">
-                        <div class="border rounded p-3 text-center">
+                        <div class="about-card text-center">
                             <strong>Frontend</strong>
                             <p class="text-muted mb-0 mt-1">
                                 Thymeleaf, Bootstrap 5
@@ -101,7 +158,7 @@
                     </div>
 
                     <div class="col-md-3 col-sm-6">
-                        <div class="border rounded p-3 text-center">
+                        <div class="about-card text-center">
                             <strong>Database</strong>
                             <p class="text-muted mb-0 mt-1">
                                 MySQL / H2, Hibernate
@@ -116,12 +173,13 @@
         <!-- ================= VALUES ================= -->
         <div class="row mb-5">
             <div class="col-md-12">
-                <h3 class="fw-bold mb-3 text-center">What We Focus On</h3>
+                <h3 class="fw-bold mb-4 text-center">What We Focus On</h3>
 
-                <div class="row g-4">
+                <div class="row g-4 text-center">
 
                     <div class="col-md-4">
-                        <h6 class="fw-semibold">✔ Clean Code</h6>
+                        <i class="bi bi-code-slash fs-2 text-primary"></i>
+                        <h6 class="fw-semibold mt-2">Clean Code</h6>
                         <p class="text-muted">
                             Readable, maintainable code following
                             best practices and design principles.
@@ -129,7 +187,8 @@
                     </div>
 
                     <div class="col-md-4">
-                        <h6 class="fw-semibold">✔ Performance</h6>
+                        <i class="bi bi-speedometer2 fs-2 text-success"></i>
+                        <h6 class="fw-semibold mt-2">Performance</h6>
                         <p class="text-muted">
                             Efficient database access, pagination,
                             and optimized queries.
@@ -137,7 +196,8 @@
                     </div>
 
                     <div class="col-md-4">
-                        <h6 class="fw-semibold">✔ User Experience</h6>
+                        <i class="bi bi-heart fs-2 text-danger"></i>
+                        <h6 class="fw-semibold mt-2">User Experience</h6>
                         <p class="text-muted">
                             Simple navigation, consistent UI,
                             and predictable application behavior.
@@ -158,6 +218,10 @@
                 <p class="text-muted">
                     Java Full Stack Developer with strong focus on
                     Spring Boot, REST APIs, and backend system design.
+                </p>
+
+                <p class="text-muted mt-3">
+                    © <span th:text="${buildYear != null ? buildYear : #dates.year(#dates.createNow())}">2026</span> ShopEase
                 </p>
             </div>
         </div>

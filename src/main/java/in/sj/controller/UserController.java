@@ -13,6 +13,8 @@ import in.sj.service.CartService;
 import in.sj.service.OrderService;
 import lombok.RequiredArgsConstructor;
 
+// UserController
+
 @Controller
 @RequestMapping("/user")
 @RequiredArgsConstructor
@@ -33,10 +35,18 @@ public class UserController {
         long totalOrders = orderService.countOrdersByUsername(username);
         long cartItems = cartService.countCartItemsByUsername(username);
 
+        double totalSpent = orderService.getTotalSpentByUsername(username);
+        var lastOrder = orderService.getLastOrderByUsername(username);
+        var recentOrders = orderService.getRecentOrdersByUsername(username, 5);
+
         model.addAttribute("username", username);
         model.addAttribute("totalOrders", totalOrders);
         model.addAttribute("cartItems", cartItems);
+        model.addAttribute("totalSpent", totalSpent);
+        model.addAttribute("lastOrder", lastOrder);
+        model.addAttribute("recentOrders", recentOrders);
 
         return "user-dashboard";
     }
+
 }
