@@ -4,6 +4,8 @@ import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -22,6 +24,7 @@ public class ProductService {
     private final ProductRepository productRepository;
 
     // ================= GET ALL PRODUCTS =================
+    @Cacheable("products")
     public Page<Product> getAllProducts(Pageable pageable) {
 
         log.debug("FETCH ALL PRODUCTS | page={} | size={} | sort={}",
@@ -63,6 +66,7 @@ public class ProductService {
     }
 
     // ================= SAVE PRODUCT =================
+    @CacheEvict(value = "products", allEntries = true)
     public Product save(Product product) {
 
         boolean isNew = (product.getId() == null);
@@ -81,6 +85,7 @@ public class ProductService {
     }
 
     // ================= DELETE PRODUCT =================
+    @CacheEvict(value = "products", allEntries = true)
     public void deleteProduct(Long id) {
 
         log.warn("DELETE PRODUCT | productId={}", id);
@@ -103,6 +108,7 @@ public class ProductService {
     //  HOME PAGE CAROUSEL METHODS 
 
     //  Featured Products
+    @Cacheable("featured")
     public List<Product> getFeaturedProducts() {
         log.debug("FETCH FEATURED PRODUCTS");
         return productRepository.findTop12ByFeaturedTrueOrderByIdDesc();

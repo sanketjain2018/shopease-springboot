@@ -1,37 +1,228 @@
 
- 
-<!-- TEMPLATES CODE USED HERE --> 
-
 
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
-       th:replace="~{layout :: layout(~{::section})}">
+	th:replace="~{layout :: layout(~{::section})}">
 
 <section>
 
-    <!-- ================= CHECKOUT ================= -->
-    <div class="container my-5 text-center">
+	<!-- ===================== FLASH MESSAGES ===================== -->
+	<div class="container mt-3">
+		<div th:if="${success}"
+			class="alert alert-success alert-dismissible fade show" role="alert">
+			<i class="bi bi-check-circle-fill me-2"></i> <span
+				th:text="${success}"></span>
+			<button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+		</div>
+		<div th:if="${error}"
+			class="alert alert-danger alert-dismissible fade show" role="alert">
+			<i class="bi bi-exclamation-triangle-fill me-2"></i> <span
+				th:text="${error}"></span>
+			<button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+		</div>
+	</div>
 
-        <h3 class="fw-bold mb-4">🧾 Checkout</h3>
+	<!-- ===================== CHECKOUT PAGE ===================== -->
+	<div class="container my-5">
 
-        <p class="text-muted mb-4">
-            Please confirm your order before placing it.
-        </p>
+		<h3 class="fw-bold mb-1 text-center">🧾 Checkout</h3>
+		<p class="text-muted text-center mb-4">Review your order and
+			complete payment.</p>
 
-        <!-- PLACE ORDER -->
-        <form th:action="@{/user/checkout}" method="post">
-            <button class="btn btn-success px-4">
-                ✅ Place Order
-            </button>
-        </form>
+		<!-- ===== EMPTY CART GUARD ===== -->
+		<div th:if="${#lists.isEmpty(cartItems)}" class="text-center py-5">
+			<i class="bi bi-cart-x" style="font-size: 4rem; color: #ccc;"></i>
+			<p class="mt-3 text-muted fs-5">Your cart is empty.</p>
+			<a th:href="@{/user/products}" class="btn btn-primary mt-2"> 🛍️
+				Continue Shopping </a>
+		</div>
 
-        <!-- BACK -->
-        <a th:href="@{/user/cart}"
-           class="btn btn-secondary mt-3">
-            ← Back to Cart
-        </a>
+		<!-- ===== CHECKOUT CONTENT (only if cart has items) ===== -->
+		<div th:unless="${#lists.isEmpty(cartItems)}"
+			class="row g-4 justify-content-center">
 
-    </div>
+			<!-- ── Left: Order Summary ── -->
+			<div class="col-lg-7">
+				<div class="card shadow-sm border-0 rounded-4">
+					<div
+						class="card-header bg-white fw-semibold fs-5 rounded-top-4 py-3 px-4">
+						🛒 Order Summary</div>
+					<div class="card-body p-0">
+						<table class="table table-hover align-middle mb-0">
+
+
+
+							<thead class="table-light">
+								<tr>
+									<th class="ps-4">Product</th>
+									<th class="text-center">Qty</th>
+									<th class="text-center">Price</th>
+									<th class="text-end pe-4">Subtotal</th>
+								</tr>
+							</thead>
+
+							<tbody>
+								<tr th:each="item : ${cartItems}">
+
+									<!-- Product Name + Image -->
+									<td class="ps-4">
+										<div class="d-flex align-items-center gap-3">
+
+											<!-- ✅ item.product.imageUrl — exists on Product entity -->
+											<img th:if="${item.product.imageUrl != null}"
+												th:src="${item.product.imageUrl}" alt="product image"
+												class="rounded" width="50" height="50"
+												style="object-fit: cover;" />
+
+											<!-- fallback if no image -->
+											<img th:unless="${item.product.imageUrl != null}"
+												src="/images/no-image.png" alt="no image" class="rounded"
+												width="50" height="50" style="object-fit: cover;" />
+
+											<div>
+												<!-- ✅ item.product.name -->
+												<div class="fw-semibold" th:text="${item.product.name}">Product</div>
+												<!-- ✅ item.product.category -->
+												<small class="text-muted" th:text="${item.product.category}">Category</small>
+											</div>
+
+										</div>
+									</td>
+
+									<!-- Quantity -->
+									<td class="text-center"><span
+										class="badge bg-secondary rounded-pill"
+										th:text="${item.quantity}">1</span></td>
+
+									<!-- Price per item -->
+									<td class="text-center text-muted">
+										<!-- ✅ item.product.price --> ₹<span
+										th:text="${item.product.price}">0.00</span>
+									</td>
+
+									<!-- Subtotal = price × quantity -->
+									<td class="text-end pe-4 fw-semibold text-success">
+										<!-- ✅ calculated inline --> ₹<span
+										th:text="${item.product.price * item.quantity}">0.00</span>
+									</td>
+
+								</tr>
+							</tbody>
+						</table>
+					</div>
+				</div>
+			</div>
+
+			<!-- ── Right: Payment Panel ── -->
+			<div class="col-lg-4">
+				<div class="card shadow-sm border-0 rounded-4">
+					<div
+						class="card-header bg-white fw-semibold fs-5 rounded-top-4 py-3 px-4">
+						💳 Payment Details</div>
+					<div class="card-body px-4 py-3">
+
+						<!-- Price Breakdown -->
+						<div class="d-flex justify-content-between text-muted mb-2">
+							<span>Subtotal</span> <span>₹<span th:text="${total}">0.00</span></span>
+						</div>
+						<div class="d-flex justify-content-between text-muted mb-2">
+							<span>Shipping</span> <span class="text-success fw-semibold">FREE</span>
+						</div>
+						<hr />
+						<div class="d-flex justify-content-between fw-bold fs-5 mb-4">
+							<span>Total</span> <span class="text-success"> ₹<span
+								th:text="${total}">0.00</span>
+							</span>
+						</div>
+
+						<!-- Razorpay Pay Button -->
+						<button id="razorpayBtn"
+							class="btn btn-success w-100 py-2 fw-semibold fs-5 rounded-3">
+							🔒 Pay ₹<span th:text="${total}">0.00</span>
+						</button>
+
+						<!-- Back to Cart -->
+						<a th:href="@{/user/cart}"
+							class="btn btn-outline-secondary w-100 mt-2 rounded-3"> ←
+							Back to Cart </a>
+
+						<!-- Trust badges -->
+						<div class="text-center mt-3">
+							<small class="text-muted"> <i
+								class="bi bi-shield-lock-fill text-success me-1"></i> Secured by
+								Razorpay · SSL Encrypted
+							</small>
+						</div>
+
+					</div>
+				</div>
+			</div>
+
+		</div>
+		<!-- /row -->
+
+	</div>
+
+
+	<!-- ===================== HIDDEN VERIFICATION FORM ===================== -->
+	<form id="paymentVerifyForm" th:action="@{/user/payment/verify}"
+		method="POST" style="display: none;">
+
+		<input type="hidden" id="rzp_order_id" name="razorpayOrderId" /> <input
+			type="hidden" id="rzp_payment_id" name="razorpayPaymentId" /> <input
+			type="hidden" id="rzp_signature" name="razorpaySignature" />
+	</form>
+	<!-- ===================== RAZORPAY SCRIPT ===================== -->
+	<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+	<script th:inline="javascript">
+
+        /*<![CDATA[*/
+        const rzpOptions = {
+            key:         /*[[${order.keyId}]]*/   '',
+            amount:      /*[[${order.amount}]]*/  0,       // in paise
+            currency:    /*[[${order.currency}]]*/ 'INR',
+            order_id:    /*[[${order.orderId}]]*/ '',
+            name:        'My Shop',
+            description: 'Order Payment',
+            image:       '/images/logo.png',               // your logo (optional)
+
+            handler: function (response) {
+                // ✅ Payment success — populate hidden form & submit for server verification
+                document.getElementById('rzp_order_id').value   = response.razorpay_order_id;
+                document.getElementById('rzp_payment_id').value = response.razorpay_payment_id;
+                document.getElementById('rzp_signature').value  = response.razorpay_signature;
+                document.getElementById('paymentVerifyForm').submit();
+            },
+
+            modal: {
+                ondismiss: function () {
+                    // User closed the Razorpay modal without paying
+                    console.warn('Payment cancelled by user.');
+                }
+            },
+
+            prefill: {
+                name:    '',   // bind from model if available: [[${userName}]]
+                email:   '',   // bind from model if available: [[${userEmail}]]
+                contact: ''
+            },
+
+            theme: { color: '#198754' }   // Bootstrap success green
+        };
+
+        document.getElementById('razorpayBtn').addEventListener('click', function () {
+            // ✅ Guard: only open if order data is valid
+            if (!rzpOptions.order_id) {
+                alert('Payment session expired. Please go back to cart and try again.');
+                return;
+            }
+            const rzp = new Razorpay(rzpOptions);
+            rzp.open();
+        });
+        /*]]>*/
+
+    </script>
 
 </section>
 </html>
+

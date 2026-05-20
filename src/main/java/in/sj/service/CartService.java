@@ -16,130 +16,118 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class CartService {
 
-    private static final Logger log =
-            LoggerFactory.getLogger(CartService.class);
+	private static final Logger log = LoggerFactory.getLogger(CartService.class);
 
-    private final CartRepository cartRepository;
-    private final ProductRepository productRepository;
+	private final CartRepository cartRepository;
+	private final ProductRepository productRepository;
 
-    // ================= ADD TO CART =================
-    public void addToCart(String username, Long productId) {
+	// ================= ADD TO CART =================
+	public void addToCart(String username, Long productId) {
 
-        log.info("ADD TO CART | user={} | productId={}", username, productId);
+		log.info("ADD TO CART | user={} | productId={}", username, productId);
 
-        CartItem item = cartRepository
-                .findByUsernameAndProductId(username, productId)
-                .orElse(null);
+		CartItem item = cartRepository.findByUsernameAndProductId(username, productId).orElse(null);
 
-        if (item != null) {
-            item.setQuantity(item.getQuantity() + 1);
-            log.debug("CART ITEM UPDATED | productId={} | newQty={}",
-                    productId, item.getQuantity());
-        } else {
-            Product product = productRepository.findById(productId)
-                    .orElseThrow(() -> {
-                        log.warn("PRODUCT NOT FOUND | productId={}", productId);
-                        return new RuntimeException("Product not found");
-                    });
+		if (item != null) {
+			item.setQuantity(item.getQuantity() + 1);
+			log.debug("CART ITEM UPDATED | productId={} | newQty={}", productId, item.getQuantity());
+		} else {
+			Product product = productRepository.findById(productId).orElseThrow(() -> {
+				log.warn("PRODUCT NOT FOUND | productId={}", productId);
+				return new RuntimeException("Product not found");
+			});
 
-            item = new CartItem();
-            item.setUsername(username);
-            item.setProduct(product);
-            item.setQuantity(1);
+			item = new CartItem();
+			item.setUsername(username);
+			item.setProduct(product);
+			item.setQuantity(1);
 
-            log.debug("NEW CART ITEM CREATED | product={} | qty=1",
-                    product.getName());
-        }
+			log.debug("NEW CART ITEM CREATED | product={} | qty=1", product.getName());
+		}
 
-        cartRepository.save(item);
-        log.info("ADD TO CART COMPLETED | user={} | productId={}", username, productId);
-    }
+		cartRepository.save(item);
+		log.info("ADD TO CART COMPLETED | user={} | productId={}", username, productId);
+	}
 
-    // ================= GET CART ITEMS =================
-    public List<CartItem> getCartItems(String username) {
+	
+	// ================= GET ITEM QUANTITY  =================
+	// Add this method to CartService
+	public int getItemQuantity(String username, Long productId) {
+		return cartRepository.findByUsernameAndProductId(username, productId).map(CartItem::getQuantity).orElse(0);
+	}
 
-        log.debug("FETCH CART ITEMS | user={}", username);
+	// ================= GET CART ITEMS =================
+	public List<CartItem> getCartItems(String username) {
 
-        List<CartItem> items = cartRepository.findByUsername(username);
+		log.debug("FETCH CART ITEMS | user={}", username);
 
-        log.debug("CART ITEMS COUNT | user={} | count={}",
-                username, items.size());
+		List<CartItem> items = cartRepository.findByUsername(username);
 
-        return items;
-    }
+		log.debug("CART ITEMS COUNT | user={} | count={}", username, items.size());
 
-    // ================= CHANGE QUANTITY =================
-    public void changeQuantity(String username, Long productId, int change) {
+		return items;
+	}
 
-        log.info("CHANGE CART QUANTITY | user={} | productId={} | change={}",
-                username, productId, change);
+	// ================= CHANGE QUANTITY =================
+	public void changeQuantity(String username, Long productId, int change) {
 
-        CartItem item = cartRepository
-                .findByUsernameAndProductId(username, productId)
-                .orElseThrow(() -> {
-                    log.warn("CART ITEM NOT FOUND | user={} | productId={}",
-                            username, productId);
-                    return new RuntimeException("Cart item not found");
-                });
+		log.info("CHANGE CART QUANTITY | user={} | productId={} | change={}", username, productId, change);
 
-        int newQty = item.getQuantity() + change;
+		CartItem item = cartRepository.findByUsernameAndProductId(username, productId).orElseThrow(() -> {
+			log.warn("CART ITEM NOT FOUND | user={} | productId={}", username, productId);
+			return new RuntimeException("Cart item not found");
+		});
 
-        if (newQty <= 0) {
-            cartRepository.delete(item);
-            log.info("CART ITEM REMOVED | user={} | productId={}",
-                    username, productId);
-        } else {
-            item.setQuantity(newQty);
-            cartRepository.save(item);
+		int newQty = item.getQuantity() + change;
 
-            log.debug("CART QUANTITY UPDATED | user={} | productId={} | qty={}",
-                    username, productId, newQty);
-        }
-    }
+		if (newQty <= 0) {
+			cartRepository.delete(item);
+			log.info("CART ITEM REMOVED | user={} | productId={}", username, productId);
+		} else {
+			item.setQuantity(newQty);
+			cartRepository.save(item);
 
-    // ================= REMOVE ITEM =================
-    public void removeItem(String username, Long productId) {
+			log.debug("CART QUANTITY UPDATED | user={} | productId={} | qty={}", username, productId, newQty);
+		}
+	}
 
-        log.info("REMOVE CART ITEM | user={} | productId={}",
-                username, productId);
+	// ================= REMOVE ITEM =================
+	public void removeItem(String username, Long productId) {
 
-        cartRepository.findByUsernameAndProductId(username, productId)
-                .ifPresent(item -> {
-                    cartRepository.delete(item);
-                    log.info("CART ITEM REMOVED | user={} | productId={}",
-                            username, productId);
-                });
-    }
+		log.info("REMOVE CART ITEM | user={} | productId={}", username, productId);
 
-    // ================= CALCULATE TOTAL =================
-    public double calculateTotal(String username) {
+		cartRepository.findByUsernameAndProductId(username, productId).ifPresent(item -> {
+			cartRepository.delete(item);
+			log.info("CART ITEM REMOVED | user={} | productId={}", username, productId);
+		});
+	}
 
-        log.debug("CALCULATE CART TOTAL | user={}", username);
+	// ================= CALCULATE TOTAL =================
+	public double calculateTotal(String username) {
 
-        double total = getCartItems(username).stream()
-                .mapToDouble(i ->
-                        i.getProduct().getPrice() * i.getQuantity())
-                .sum();
+		log.debug("CALCULATE CART TOTAL | user={}", username);
 
-        log.debug("CART TOTAL | user={} | total={}", username, total);
+		double total = getCartItems(username).stream().mapToDouble(i -> i.getProduct().getPrice() * i.getQuantity())
+				.sum();
 
-        return total;
-    }
+		log.debug("CART TOTAL | user={} | total={}", username, total);
 
-    // ================= CLEAR CART =================
-    public void clearCart(String username) {
+		return total;
+	}
 
-        log.info("CLEAR CART | user={}", username);
+	// ================= CLEAR CART =================
+	public void clearCart(String username) {
 
-        List<CartItem> items = getCartItems(username);
-        cartRepository.deleteAll(items);
+		log.info("CLEAR CART | user={}", username);
 
-        log.info("CART CLEARED | user={} | itemsRemoved={}",
-                username, items.size());
-    }
-    
-    public long countCartItemsByUsername(String username) {
-        return cartRepository.countByUsername(username);
-    }
+		List<CartItem> items = getCartItems(username);
+		cartRepository.deleteAll(items);
+
+		log.info("CART CLEARED | user={} | itemsRemoved={}", username, items.size());
+	}
+
+	public long countCartItemsByUsername(String username) {
+		return cartRepository.countByUsername(username);
+	}
 
 }
