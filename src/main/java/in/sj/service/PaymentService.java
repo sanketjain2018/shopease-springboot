@@ -1,21 +1,23 @@
 // service/PaymentService.java
 package in.sj.service;
 
-import com.razorpay.Order;
-import com.razorpay.RazorpayClient;
-import com.razorpay.RazorpayException;
-import in.sj.dto.PaymentOrderResponse;
-import in.sj.dto.PaymentVerificationRequest;
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
+import java.nio.charset.StandardCharsets;
+
+import javax.crypto.Mac;
+import javax.crypto.spec.SecretKeySpec;
+
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
-import javax.crypto.Mac;
-import javax.crypto.spec.SecretKeySpec;
-import java.math.BigDecimal;
-import java.nio.charset.StandardCharsets;
+import com.razorpay.Order;
+import com.razorpay.RazorpayClient;
+import com.razorpay.RazorpayException;
+
+import in.sj.dto.PaymentOrderResponse;
+import in.sj.dto.PaymentVerificationRequest;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @Service
@@ -25,11 +27,11 @@ public class PaymentService {
 	private final RazorpayClient razorpayClient;
 	private final CartService cartService;
 
-	@Value("${razorpay.key.id}")
-	private String keyId;
+	@Value("${razorpay.key}")
+	private String razorpayKey;
 
-	@Value("${razorpay.key.secret}")
-	private String keySecret;
+	@Value("${razorpay.secret}")
+	private String razorpaySecret;
 
 	@Value("${razorpay.currency}")
 	private String currency;
@@ -48,7 +50,7 @@ public class PaymentService {
 		Order order = razorpayClient.orders.create(options);
 		log.info("Razorpay order created | orderId={} | user={}", order.get("id"), username);
 
-		return new PaymentOrderResponse(order.get("id"), amountInPaise, currency, keyId);
+		return new PaymentOrderResponse(order.get("id"), amountInPaise, currency, razorpayKey);
 	}
 
 	// ---- Verify Payment Signature ----
@@ -56,7 +58,7 @@ public class PaymentService {
 		try {
 			String payload = req.getRazorpayOrderId() + "|" + req.getRazorpayPaymentId();
 			Mac mac = Mac.getInstance("HmacSHA256");
-			mac.init(new SecretKeySpec(keySecret.getBytes(StandardCharsets.UTF_8), "HmacSHA256"));
+			mac.init(new SecretKeySpec(razorpaySecret.getBytes(StandardCharsets.UTF_8), "HmacSHA256"));
 			byte[] hash = mac.doFinal(payload.getBytes(StandardCharsets.UTF_8));
 
 			StringBuilder hexString = new StringBuilder();
