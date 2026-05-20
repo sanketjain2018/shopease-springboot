@@ -66,40 +66,39 @@
         <scope>runtime</scope>
     </dependency>
 
-    <!-- PostgreSQL (Render) -->
-    <dependency>
-        <groupId>org.postgresql</groupId>
-        <artifactId>postgresql</artifactId>
-        <scope>runtime</scope>
-    </dependency>
+		<dependency>
+			<groupId>org.postgresql</groupId>
+			<artifactId>postgresql</artifactId>
+			<scope>runtime</scope>
+		</dependency>
 
-    <!-- Lombok -->
+		<!-- Lombok -->
     <dependency>
         <groupId>org.projectlombok</groupId>
         <artifactId>lombok</artifactId>
         <optional>true</optional>
     </dependency>
 
-    <!-- Spring Security -->
+		<!-- Spring Security -->
     <dependency>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-security</artifactId>
     </dependency>
 
-    <!-- Cloudinary -->
+		<!-- Cloudinary -->
     <dependency>
         <groupId>com.cloudinary</groupId>
         <artifactId>cloudinary-http44</artifactId>
         <version>1.37.0</version>
     </dependency>
 
-    <!-- Email (for DEV Gmail SMTP) -->
+		<!-- Email (for DEV Gmail SMTP) -->
     <dependency>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-mail</artifactId>
     </dependency>
 
-    <!-- Devtools -->
+		<!-- Devtools -->
     <dependency>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-devtools</artifactId>
@@ -107,13 +106,13 @@
         <optional>true</optional>
     </dependency>
 
-    <!-- Thymeleaf Security Extras -->
+		<!-- Thymeleaf Security Extras -->
     <dependency>
         <groupId>org.thymeleaf.extras</groupId>
         <artifactId>thymeleaf-extras-springsecurity6</artifactId>
     </dependency>
 
-    <!-- Testing -->
+		<!-- Testing -->
     <dependency>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-test</artifactId>
@@ -124,7 +123,7 @@
 			<artifactId>razorpay-java</artifactId>
 			<version>1.4.5</version>
 		</dependency>
-		
+
 		<!-- pom.xml -->
 		<dependency>
 		    <groupId>org.springframework.boot</groupId>
