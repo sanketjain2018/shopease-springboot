@@ -117,11 +117,8 @@ src
 
 ```bash
 # Clone the repository
-git clone https://github.com/<your-username>/ShopEase.git
+git clone https://github.com/sanketjain2018/shopease-springboot.git
 cd ShopEase
-
-# Configure database credentials
-# Edit src/main/resources/application.properties with your MySQL username/password
 
 # Build and run
 mvn clean install
